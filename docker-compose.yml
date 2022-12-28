@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  clay.api:
+    image: ${DOCKER_REGISTRY-}clayapi
+    build:
+      context: .
+      dockerfile: Clay.Api/Dockerfile
+        
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
