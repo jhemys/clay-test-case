@@ -1,8 +1,8 @@
 ﻿using Clay.Domain.Core.DomainObjects;
 
-namespace Clay.Domain.Core.Interfaces.Repositories
+namespace Clay.Domain.Interfaces.Repositories
 {
-    public interface IRepository<TModel> where TModel : Entity
+    public interface IGenericRepository<TModel> where TModel : Entity
     {
         Task<TModel> GetById(long id);
         Task AddAsync(TModel model);

@@ -9,7 +9,7 @@ namespace Clay.Domain
         public string Description { get; protected set; }
         public LockType Type { get; set; }
         private IReadOnlyList<Role> AllowedRoles { get; set; }
-        private IList<Log> Logs { get; set; }
+        private History History { get; set; }
 
         public void Unlock(Role userRole)
         {
@@ -29,7 +29,7 @@ namespace Clay.Domain
 
         public IReadOnlyList<Log> GetLogs()
         {
-            return Logs.ToImmutableList();
+            return History.GetLogs();
         }
     }
 }

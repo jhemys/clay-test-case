@@ -15,4 +15,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Clay.Application\Clay.Application.csproj" />
+    <ProjectReference Include="..\Clay.Domain.Core\Clay.Domain.Core.csproj" />
+  </ItemGroup>
+
 </Project>
