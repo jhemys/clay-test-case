@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Domain", "Clay.Domain\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Tests", "Clay.Tests\Clay.Tests.csproj", "{4BDF180C-0B0A-4E6D-A78A-6066002AADF4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Infrastructure", "Clay.Repository\Clay.Infrastructure.csproj", "{EC75A65E-84C3-48B4-8DAE-7CFAE8151E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Infrastructure", "Clay.Infrastructure\Clay.Infrastructure.csproj", "{EC75A65E-84C3-48B4-8DAE-7CFAE8151E57}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C745A492-CC34-433D-9E20-ED79CDF8AC75}"
 EndProject
