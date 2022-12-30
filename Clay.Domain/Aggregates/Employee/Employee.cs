@@ -10,17 +10,19 @@ namespace Clay.Domain.Aggregates.Employee
         public Role Role { get; protected set; }
         public string Password { get; protected set; }
         public string Email { get; protected set; }
-        public Employee() : base() { }
+        public string? TagIdentification { get; set; }
+        private Employee() : base() { }
 
-        protected Employee(string name, string role, string password, string email) : base()
+        protected Employee(string name, string role, string password, string email, string? tagIdentification) : this()
         {
             Name = name;
             Role = new Role(role);
             Password = password;
             Email = email;
+            TagIdentification = tagIdentification;
         }
 
-        public static Employee Create(string name, string role, string password, string email)
+        public static Employee Create(string name, string role, string password, string email, string? tagIdentification = null)
         {
             Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
             Throw.IfArgumentIsNullOrEmpty(role, "The parameter Role is required.");
@@ -28,7 +30,7 @@ namespace Clay.Domain.Aggregates.Employee
             Throw.IfArgumentIsInvalidEmail(email, "The parameter Email is invalid.");
             Throw.IfArgumentIsNullOrEmpty(password, "The parameter Password is required.");
 
-            return new Employee(name, role, password, email);
+            return new Employee(name, role, password, email, tagIdentification);
         }
 
         public void ChangePassword(string currentPassword, string newPassword)

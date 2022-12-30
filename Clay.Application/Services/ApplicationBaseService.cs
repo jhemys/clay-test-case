@@ -1,4 +1,4 @@
-﻿using Clay.Infrastructure;
+﻿using Clay.Application.Interfaces.Repositories;
 
 namespace Clay.Application.Services
 {

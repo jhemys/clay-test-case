@@ -1,17 +1,21 @@
-﻿using Clay.Domain.Interfaces.Repositories;
+﻿using Clay.Application.Interfaces.Repositories;
 using Clay.Infrastructure.Data;
 using Clay.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text;
 
 namespace Clay.Infrastructure.ServicesExtension
 {
+    [ExcludeFromCodeCoverage]
     public static class ServicesExtension
     {
-        public static void AddDatabaseConnection(this IServiceCollection services)
+        public static void AddDatabaseConnection(this IServiceCollection services, string connectionString)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTIONSTRING") ?? "name=ConnectionStrings:ClayDbContext";
             services.AddDbContext<ClayDbContext>(options => options.UseSqlServer(connectionString,
                 sqlServerOptionsAction: sqlOptions =>
                 {
@@ -33,6 +37,30 @@ namespace Clay.Infrastructure.ServicesExtension
                 var dataContext = scope.ServiceProvider.GetRequiredService<ClayDbContext>();
                 dataContext.Database.Migrate();
             }
+        }
+
+        public static void AddJwtAuthentication(this IServiceCollection services, string jwtSecretKey)
+        {
+            var key = Encoding.ASCII.GetBytes(jwtSecretKey);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
     }
 }

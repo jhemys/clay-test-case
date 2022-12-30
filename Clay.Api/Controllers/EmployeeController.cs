@@ -1,6 +1,7 @@
 ﻿using Clay.Api.Models;
 using Clay.Application.DTOs;
-using Clay.Application.Interfaces;
+using Clay.Application.Interfaces.Services;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,29 +28,27 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IList<EmployeeDTO>> GetAll()
+        public async Task<IList<EmployeeResponse>> GetAll()
         {
-            return await _employeeService.GetAll();
+            var employees = await _employeeService.GetAll();
+
+            return employees.Adapt<IList<EmployeeResponse>>();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<EmployeeDTO>> GetById(int id)
+        public async Task<EmployeeResponse> GetById(int id)
         {
-            return await _employeeService.GetById(id);
+            var employee = await _employeeService.GetById(id);
+
+            return employee.Adapt<EmployeeResponse>();
         }
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] EmployeeRequest request)
         {
-            var employeeToCreate = new EmployeeDTO
-            {
-                Email = request.Email,
-                Name = request.Name,
-                Password = request.Password,
-                Role = request.Role
-            };
+            var employee = request.Adapt<EmployeeDTO>();
 
-            await _employeeService.CreateEmployee(employeeToCreate);
+            await _employeeService.CreateEmployee(employee);
 
             return NoContent();
         }
@@ -57,16 +56,10 @@ namespace Clay.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] EmployeeRequest request)
         {
-            var employeeToUpdate = new EmployeeDTO
-            {
-                Id = id,
-                Email = request.Email,
-                Name = request.Name,
-                Password = request.Password,
-                Role = request.Role
-            };
+            var employee = request.Adapt<EmployeeDTO>();
+            employee.Id = id;
 
-            await _employeeService.UpdateEmployee(employeeToUpdate);
+            await _employeeService.UpdateEmployee(employee);
 
             return NoContent();
         }
@@ -83,12 +76,8 @@ namespace Clay.Api.Controllers
         [Route("ChangePassword/{id:int}")]
         public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
         {
-            var employeeToChangePassword = new ChangeEmployeePasswordDTO
-            {
-                Id = id,
-                CurrentPassword = request.CurrentPassword,
-                NewPassword = request.NewPassword
-            };
+            var employeeToChangePassword = request.Adapt<ChangeEmployeePasswordDTO>();
+            employeeToChangePassword.Id = id;
 
             await _employeeService.ChangeEmployeePassword(employeeToChangePassword);
 

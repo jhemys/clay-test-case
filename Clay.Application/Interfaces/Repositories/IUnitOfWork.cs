@@ -1,6 +1,6 @@
-﻿using Clay.Domain.Interfaces.Repositories;
+﻿using Clay.Application.Interfaces.Repositories;
 
-namespace Clay.Infrastructure
+namespace Clay.Application.Interfaces.Repositories
 {
     public interface IUnitOfWork
     {

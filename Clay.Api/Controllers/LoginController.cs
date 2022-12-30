@@ -1,6 +1,6 @@
 ﻿using Clay.Api.Models;
 using Clay.Application.Exceptions;
-using Clay.Application.Interfaces;
+using Clay.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Api.Controllers
@@ -33,7 +33,13 @@ namespace Clay.Api.Controllers
             }
             catch (EntityNotFoundException)
             {
-                return NotFound();
+                var errorDetails = new ErrorDetails
+                {
+                    StatusCode = 400,
+                    Message = "Email/Password incorrect or invalid."
+                };
+
+                return BadRequest(errorDetails);
             }
         }
     }

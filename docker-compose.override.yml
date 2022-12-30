@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - JWT_SECRET=SECRET_KEY
+      - JWT_SECRET=dGhpcyBpcyBteSBjdXN0b20gU2VjcmV0IGtleSBmb3IgYXV0aGVudGljYXRpb24
       - DATABASE_CONNECTIONSTRING=Server=sqlserver;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false
     ports:
       - "80"

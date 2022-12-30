@@ -1,8 +1,8 @@
 ﻿using Clay.Application.DTOs;
 using Clay.Application.Exceptions;
-using Clay.Application.Interfaces;
+using Clay.Application.Interfaces.Repositories;
+using Clay.Application.Interfaces.Services;
 using Clay.Domain.Aggregates.Employee;
-using Clay.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -129,7 +129,7 @@ namespace Clay.Application.Services
                     new Claim(ClaimTypes.Name, employee.Name.ToString()),
                     new Claim(ClaimTypes.Role, employee.Role.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddSeconds(20),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

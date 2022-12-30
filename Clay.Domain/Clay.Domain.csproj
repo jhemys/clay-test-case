@@ -10,9 +10,4 @@
     <ProjectReference Include="..\Clay.Domain.Core\Clay.Domain.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Aggregates\Door\" />
-    <Folder Include="Aggregates\DoorHistory\" />
-  </ItemGroup>
-
 </Project>

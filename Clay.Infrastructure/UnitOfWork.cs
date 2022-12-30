@@ -1,4 +1,4 @@
-﻿using Clay.Domain.Interfaces.Repositories;
+﻿using Clay.Application.Interfaces.Repositories;
 using Clay.Infrastructure.Data;
 using Clay.Infrastructure.Repositories;
 

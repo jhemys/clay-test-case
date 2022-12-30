@@ -1,6 +1,6 @@
 ﻿using Clay.Application.DTOs;
 
-namespace Clay.Application.Interfaces
+namespace Clay.Application.Interfaces.Services
 {
     public interface IEmployeeService
     {

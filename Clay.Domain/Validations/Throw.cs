@@ -24,7 +24,7 @@ namespace Clay.Domain.Validations
                 throw new DomainException($"{message}");
         }
 
-        public static void AssertArgumentFalse(bool boolValue, string message)
+        public static void IfArgumentIsTrue(bool boolValue, string message)
         {
             if (boolValue)
                 throw new DomainException($"{message}");
@@ -96,7 +96,7 @@ namespace Clay.Domain.Validations
                 throw new DomainException(message);
         }
 
-        public static void AssertArgumentTrue(bool boolValue, string message)
+        public static void IfArgumentIsFalse(bool boolValue, string message)
         {
             if (!boolValue)
                 throw new DomainException(message);

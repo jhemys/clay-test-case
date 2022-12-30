@@ -1,6 +1,6 @@
 ﻿using Clay.Domain.Aggregates.Employee;
 
-namespace Clay.Domain.Interfaces.Repositories
+namespace Clay.Application.Interfaces.Repositories
 {
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {

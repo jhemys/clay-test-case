@@ -1,6 +1,6 @@
 ﻿using Clay.Domain.Core.DomainObjects;
 
-namespace Clay.Domain.Interfaces.Repositories
+namespace Clay.Application.Interfaces.Repositories
 {
     public interface IGenericRepository<TModel> where TModel : Entity
     {

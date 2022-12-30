@@ -6,7 +6,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT_SECRET": "SECRET_KEY",
+        "JWT_SECRET": "dGhpcyBpcyBteSBjdXN0b20gU2VjcmV0IGtleSBmb3IgYXV0aGVudGljYXRpb24",
         "DATABASE_CONNECTIONSTRING": "Server=localhost:1433;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false"
       },
       "dotnetRunMessages": true,
@@ -18,7 +18,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT_SECRET": "SECRET_KEY",
+        "JWT_SECRET": "dGhpcyBpcyBteSBjdXN0b20gU2VjcmV0IGtleSBmb3IgYXV0aGVudGljYXRpb24",
         "DATABASE_CONNECTIONSTRING": "Server=localhost:1433;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false"
       }
     },

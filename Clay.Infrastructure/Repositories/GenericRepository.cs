@@ -1,5 +1,5 @@
-﻿using Clay.Domain.Core.DomainObjects;
-using Clay.Domain.Interfaces.Repositories;
+﻿using Clay.Application.Interfaces.Repositories;
+using Clay.Domain.Core.DomainObjects;
 using Clay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
