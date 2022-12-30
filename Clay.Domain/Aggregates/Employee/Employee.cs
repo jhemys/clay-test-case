@@ -33,8 +33,8 @@ namespace Clay.Domain.Aggregates.Employee
 
         public void ChangePassword(string currentPassword, string newPassword)
         {
-            Throw.IfAssertArgumentsAreEqual(Password, currentPassword, "Current Password is invalid.");
-            Throw.IfAssertArgumentsAreNotEquals(newPassword, currentPassword, "New Password must be different than Current Password.");
+            Throw.IfAssertArgumentsAreNotEquals(Password, currentPassword, "Current Password is invalid.");
+            Throw.IfAssertArgumentsAreEqual(newPassword, currentPassword, "New Password must be different than Current Password.");
 
             Password = newPassword;
         }
