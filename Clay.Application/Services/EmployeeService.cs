@@ -3,6 +3,7 @@ using Clay.Application.Exceptions;
 using Clay.Application.Interfaces.Repositories;
 using Clay.Application.Interfaces.Services;
 using Clay.Domain.Aggregates.Employee;
+using Mapster;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,28 +21,14 @@ namespace Clay.Application.Services
         {
             var employees = await UnitOfWork.EmployeeRepository.GetAll();
 
-            return employees.Select(employee => new EmployeeDTO
-            {
-                Email = employee.Email,
-                Id = employee.Id,
-                Name = employee.Name,
-                Role = employee.Role.Name,
-                IsActive = employee.IsActive,
-            }).ToList();
+            return employees.Adapt<IList<EmployeeDTO>>();
         }
 
         public async Task<EmployeeDTO> GetById(int id)
         {
             var employee = await FindById(id);
 
-            return new()
-            {
-                Email = employee.Email,
-                Id = employee.Id,
-                Name = employee.Name,
-                Role = employee.Role.Name,
-                IsActive = employee.IsActive,
-            };
+            return employee.Adapt<EmployeeDTO>();
         }
 
         public async Task<EmployeeDTO> GetByEmailAndPassword(string email, string password)
@@ -51,14 +38,7 @@ namespace Clay.Application.Services
             if (employee is null)
                 throw new EntityNotFoundException();
 
-            return new()
-            {
-                Email = email,
-                Id = employee.Id,
-                Name = employee.Name,
-                Role = employee.Role.Name,
-                IsActive = employee.IsActive,
-            };
+            return employee.Adapt<EmployeeDTO>();
         }
 
         public async Task CreateEmployee(EmployeeDTO employee)
@@ -106,16 +86,6 @@ namespace Clay.Application.Services
             await UnitOfWork.CommitAsync();
         }
 
-        private async Task<Employee> FindById(int id)
-        {
-            var employeeToUpdate = await UnitOfWork.EmployeeRepository.GetById(id);
-
-            if (employeeToUpdate is null)
-                throw new EntityNotFoundException();
-
-            return employeeToUpdate;
-        }
-
         public string GenerateToken(EmployeeDTO employee)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -134,6 +104,16 @@ namespace Clay.Application.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        private async Task<Employee> FindById(int id)
+        {
+            var employeeToUpdate = await UnitOfWork.EmployeeRepository.GetById(id);
+
+            if (employeeToUpdate is null)
+                throw new EntityNotFoundException();
+
+            return employeeToUpdate;
         }
     }
 }

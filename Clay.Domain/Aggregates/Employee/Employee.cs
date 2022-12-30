@@ -1,13 +1,12 @@
-﻿using Clay.Domain.Core.DomainObjects;
+﻿using Clay.Domain.DomainObjects;
 using Clay.Domain.Validations;
-using Clay.Domain.ValueObjects;
 
 namespace Clay.Domain.Aggregates.Employee
 {
-    public class Employee : Entity
+    public class Employee : Entity, IAggregateRoot
     {
         public string Name { get; protected set; }
-        public Role Role { get; protected set; }
+        public string Role { get; protected set; }
         public string Password { get; protected set; }
         public string Email { get; protected set; }
         public string? TagIdentification { get; set; }
@@ -16,7 +15,7 @@ namespace Clay.Domain.Aggregates.Employee
         protected Employee(string name, string role, string password, string email, string? tagIdentification) : this()
         {
             Name = name;
-            Role = new Role(role);
+            Role = role;
             Password = password;
             Email = email;
             TagIdentification = tagIdentification;
@@ -59,7 +58,7 @@ namespace Clay.Domain.Aggregates.Employee
         {
             Throw.IfArgumentIsNullOrEmpty(role, "The parameter Role is required.");
 
-            Role = new Role(role);
+            Role = role;
         }
     }
 }

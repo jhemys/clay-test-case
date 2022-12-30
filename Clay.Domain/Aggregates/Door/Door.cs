@@ -1,16 +1,15 @@
-﻿using Clay.Domain.Core.DomainObjects;
+﻿using Clay.Domain.DomainObjects;
 using Clay.Domain.Validations;
-using Clay.Domain.ValueObjects;
 
 namespace Clay.Domain.Aggregates.Door
 {
-    public class Door : Entity
+    public class Door : Entity, IAggregateRoot
     {
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public bool IsLocked { get; protected set; }
         public bool IsAccessRestricted { get; protected set; }
-        private IList<Role> AllowedRoles { get; set; }
+        public virtual IList<Role> AllowedRoles { get; protected set; }
 
         private Door() : base() { }
 

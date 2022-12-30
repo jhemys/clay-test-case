@@ -4,32 +4,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Clay.Infrastructure.Data.Configuration
 {
-    internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+    public class EmployeeConfiguration : BaseConfiguration<Employee>
     {
-        public void Configure(EntityTypeBuilder<Employee> builder)
+        public override void ConfigureProperties(EntityTypeBuilder<Employee> builder)
         {
             builder
-                .HasKey(e => e.Id);
-
-            builder
-                .Property(e => e.Name)
+                .Property(p => p.Name)
                 .IsRequired();
 
             builder
-                .Property(e => e.Email)
+                .Property(p => p.Email)
                 .IsRequired();
 
             builder
-                .OwnsOne(p => p.Role);
+                .Property(p => p.Role)
+                .IsRequired();
 
             builder
-                .OwnsOne(p => p.Role, a =>
-                {
-                    a.Property(p => p.Name ).HasColumnName("Role").IsRequired();
-                });
-
-            builder
-                .Property(e => e.Password)
+                .Property(p => p.Password)
                 .IsRequired();
         }
     }

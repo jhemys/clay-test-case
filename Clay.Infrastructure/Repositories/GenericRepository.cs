@@ -1,11 +1,11 @@
 ﻿using Clay.Application.Interfaces.Repositories;
-using Clay.Domain.Core.DomainObjects;
+using Clay.Domain.DomainObjects;
 using Clay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clay.Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : Entity
+    public class GenericRepository<T> : IGenericRepository<T> where T : Entity, IAggregateRoot
     {
         private readonly ClayDbContext _context;
         protected readonly DbSet<T> Entity;
@@ -20,7 +20,7 @@ namespace Clay.Infrastructure.Repositories
             return await Entity.ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T?> GetById(int id)
         {
             return await Entity.SingleOrDefaultAsync(x => x.Id == id);
         }

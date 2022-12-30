@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Clay.Application\Clay.Application.csproj" />
-    <ProjectReference Include="..\Clay.Domain.Core\Clay.Domain.Core.csproj" />
     <ProjectReference Include="..\Clay.Infrastructure\Clay.Infrastructure.csproj" />
   </ItemGroup>
 

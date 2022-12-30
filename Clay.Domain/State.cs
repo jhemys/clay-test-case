@@ -1,4 +1,4 @@
-﻿using Clay.Domain.Core.DomainObjects;
+﻿using Clay.Domain.DomainObjects;
 
 namespace Clay.Domain
 {

@@ -15,8 +15,6 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Application", "Clay.Application\Clay.Application.csproj", "{01F802A6-80D8-427F-8100-F4F1BCBF681D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Domain.Core", "Clay.Domain.Core\Clay.Domain.Core.csproj", "{A70D68F3-60E2-4B6B-9E85-B79351AC9844}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{01F802A6-80D8-427F-8100-F4F1BCBF681D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01F802A6-80D8-427F-8100-F4F1BCBF681D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01F802A6-80D8-427F-8100-F4F1BCBF681D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A70D68F3-60E2-4B6B-9E85-B79351AC9844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A70D68F3-60E2-4B6B-9E85-B79351AC9844}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A70D68F3-60E2-4B6B-9E85-B79351AC9844}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A70D68F3-60E2-4B6B-9E85-B79351AC9844}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

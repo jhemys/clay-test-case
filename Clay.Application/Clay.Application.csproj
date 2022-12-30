@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Clay.Domain.Core\Clay.Domain.Core.csproj" />
     <ProjectReference Include="..\Clay.Domain\Clay.Domain.csproj" />
   </ItemGroup>
 

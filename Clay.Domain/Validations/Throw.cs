@@ -1,4 +1,4 @@
-﻿using Clay.Domain.Core.DomainObjects;
+﻿using Clay.Domain.DomainObjects;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 

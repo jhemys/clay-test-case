@@ -2,12 +2,10 @@
 using Clay.Application.DTOs;
 using Clay.Application.Interfaces.Services;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Api.Controllers
 {
-    //TODO CREATE MODEL FOR RESPONSES
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -16,15 +14,6 @@ namespace Clay.Api.Controllers
         public EmployeeController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
-        }
-
-        [HttpGet]
-        [Route("authenticated")]
-        [Authorize]
-        public string Test()
-        {
-            //return User.Identity.Name;
-            return "a000";
         }
 
         [HttpGet]
