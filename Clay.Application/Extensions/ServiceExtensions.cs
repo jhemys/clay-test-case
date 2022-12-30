@@ -9,7 +9,8 @@ namespace Clay.Application.Extensions
     {
         public static void AddJwtAuthentication(this IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "name=JwtSecret:Value";
+            var key = Encoding.ASCII.GetBytes(jwtSecret);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

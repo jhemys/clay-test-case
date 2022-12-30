@@ -28,7 +28,6 @@ namespace Clay.Infrastructure.Repositories
         public async Task AddAsync(T model)
         {
             await Entity.AddAsync(model);
-            await _context.SaveEntitiesAsync();
         }
 
         public void Remove(T model)
@@ -47,8 +46,6 @@ namespace Clay.Infrastructure.Repositories
             {
                 Update(model);
             }
-
-            await _context.SaveEntitiesAsync();
         }
 
         public void Update(T model)

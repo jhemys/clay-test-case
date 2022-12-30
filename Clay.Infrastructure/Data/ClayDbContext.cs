@@ -17,10 +17,5 @@ namespace Clay.Infrastructure.Data
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
-        internal Task SaveEntitiesAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
