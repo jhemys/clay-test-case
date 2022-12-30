@@ -1,4 +1,5 @@
 ﻿using Clay.Api.Models;
+using Clay.Application.Exceptions;
 using Clay.Domain.Core.DomainObjects;
 using System.Net;
 
@@ -21,6 +22,11 @@ namespace Clay.Api.Middlewares
             {
                 await _next(httpContext);
             }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogError($"{ex}");
+                await HandleNotFoundExceptionAync(httpContext, ex.Message);
+            }
             catch (DomainException ex)
             {
                 _logger.LogError($"{ex}");
@@ -31,6 +37,18 @@ namespace Clay.Api.Middlewares
                 _logger.LogError($"Something went wrong: {ex}");
                 await HandleExceptionAync(httpContext);
             }
+        }
+
+        private Task HandleNotFoundExceptionAync(HttpContext context, string message)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync(new ErrorDetails
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = message
+            }.ToString());
         }
 
         private Task HandleDomainExceptionAync(HttpContext context, string message)

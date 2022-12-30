@@ -5,7 +5,7 @@ namespace Clay.Application.Exceptions
     [Serializable]
     public class EntityNotFoundException : Exception
     {
-        public EntityNotFoundException()
+        public EntityNotFoundException() : base("Entry not found.") 
         {
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Clay.Domain.Interfaces.Repositories
+﻿using Clay.Domain.Aggregates.Employee;
+
+namespace Clay.Domain.Interfaces.Repositories
 {
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {

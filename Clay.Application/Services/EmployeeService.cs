@@ -1,7 +1,7 @@
 ﻿using Clay.Application.DTOs;
 using Clay.Application.Exceptions;
 using Clay.Application.Interfaces;
-using Clay.Domain;
+using Clay.Domain.Aggregates.Employee;
 using Clay.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -91,6 +91,17 @@ namespace Clay.Application.Services
             employeeToDelete.SetIsActive(false);
 
             UnitOfWork.EmployeeRepository.Update(employeeToDelete);
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        public async Task ChangeEmployeePassword(ChangeEmployeePasswordDTO employee)
+        {
+            var employeeToUpdate = await FindById(employee.Id);
+
+            employeeToUpdate.ChangePassword(employee.CurrentPassword, employee.NewPassword);
+
+            UnitOfWork.EmployeeRepository.Update(employeeToUpdate);
 
             await UnitOfWork.CommitAsync();
         }

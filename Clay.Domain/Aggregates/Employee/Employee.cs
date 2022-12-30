@@ -1,7 +1,8 @@
 ﻿using Clay.Domain.Core.DomainObjects;
 using Clay.Domain.Validations;
+using Clay.Domain.ValueObjects;
 
-namespace Clay.Domain
+namespace Clay.Domain.Aggregates.Employee
 {
     public class Employee : Entity
     {
@@ -24,6 +25,7 @@ namespace Clay.Domain
             Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
             Throw.IfArgumentIsNullOrEmpty(role, "The parameter Role is required.");
             Throw.IfArgumentIsNullOrEmpty(email, "The parameter Email is required.");
+            Throw.IfArgumentIsInvalidEmail(email, "The parameter Email is invalid.");
             Throw.IfArgumentIsNullOrEmpty(password, "The parameter Password is required.");
 
             return new Employee(name, role, password, email);

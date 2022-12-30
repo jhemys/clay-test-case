@@ -1,4 +1,5 @@
 ﻿using Clay.Domain.Core.DomainObjects;
+using Clay.Domain.ValueObjects;
 using System.Collections.Immutable;
 
 namespace Clay.Domain

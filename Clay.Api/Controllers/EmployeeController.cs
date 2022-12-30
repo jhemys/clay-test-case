@@ -1,5 +1,5 @@
-﻿using Clay.Application.DTOs;
-using Clay.Application.Exceptions;
+﻿using Clay.Api.Models;
+using Clay.Application.DTOs;
 using Clay.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,8 @@ namespace Clay.Api.Controllers
         [Authorize]
         public string Test()
         {
-            return User.Identity.Name;
+            //return User.Identity.Name;
+            return "a000";
         }
 
         [HttpGet]
@@ -34,14 +35,63 @@ namespace Clay.Api.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<EmployeeDTO>> GetById(int id)
         {
-            try
+            return await _employeeService.GetById(id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] EmployeeRequest request)
+        {
+            var employeeToCreate = new EmployeeDTO
             {
-                return await _employeeService.GetById(id);
-            }
-            catch (EntityNotFoundException)
+                Email = request.Email,
+                Name = request.Name,
+                Password = request.Password,
+                Role = request.Role
+            };
+
+            await _employeeService.CreateEmployee(employeeToCreate);
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] EmployeeRequest request)
+        {
+            var employeeToUpdate = new EmployeeDTO
             {
-                return NotFound();
-            }
+                Id = id,
+                Email = request.Email,
+                Name = request.Name,
+                Password = request.Password,
+                Role = request.Role
+            };
+
+            await _employeeService.UpdateEmployee(employeeToUpdate);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await _employeeService.DeleteEmployee(id);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
+        {
+            var employeeToChangePassword = new ChangeEmployeePasswordDTO
+            {
+                Id = id,
+                CurrentPassword = request.CurrentPassword,
+                NewPassword = request.NewPassword
+            };
+
+            await _employeeService.ChangeEmployeePassword(employeeToChangePassword);
+
+            return NoContent();
         }
     }
 }

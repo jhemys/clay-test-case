@@ -1,11 +1,10 @@
 ﻿namespace Clay.Api.Models
 {
-    public class EmployeeResponse
+    public class EmployeeRequest
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
         public string Email { get; set; }
-        public bool IsActive { get; set; }
+        public string Password { get; set; }
     }
 }

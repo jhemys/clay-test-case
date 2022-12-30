@@ -10,6 +10,7 @@ namespace Clay.Application.Interfaces
         Task<EmployeeDTO> GetById(int id);
         Task UpdateEmployee(EmployeeDTO employee);
         Task DeleteEmployee(int id);
+        Task ChangeEmployeePassword(ChangeEmployeePasswordDTO employee);
         string GenerateToken(EmployeeDTO employee);
     }
 }

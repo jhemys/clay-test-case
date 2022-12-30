@@ -1,4 +1,5 @@
 ﻿using Clay.Domain.Core.DomainObjects;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 
 namespace Clay.Domain.Validations
@@ -116,6 +117,12 @@ namespace Clay.Domain.Validations
         public static void AssertStateTrue(bool boolValue, string message)
         {
             if (!boolValue)
+                throw new DomainException(message);
+        }
+
+        public static void IfArgumentIsInvalidEmail(string value, string message)
+        {
+            if (!MailAddress.TryCreate(value, value, out var _))
                 throw new DomainException(message);
         }
     }

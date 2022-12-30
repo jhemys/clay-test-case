@@ -1,4 +1,4 @@
-﻿using Clay.Domain;
+﻿using Clay.Domain.Aggregates.Employee;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

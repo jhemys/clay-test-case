@@ -1,4 +1,4 @@
-﻿using Clay.Domain;
+﻿using Clay.Domain.Aggregates.Employee;
 using Clay.Domain.Interfaces.Repositories;
 using Clay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
