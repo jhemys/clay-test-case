@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Infrastructure", "Clay
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C745A492-CC34-433D-9E20-ED79CDF8AC75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clay.Application", "Clay.Application\Clay.Application.csproj", "{01F802A6-80D8-427F-8100-F4F1BCBF681D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Application", "Clay.Application\Clay.Application.csproj", "{01F802A6-80D8-427F-8100-F4F1BCBF681D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clay.Domain.Core", "Clay.Domain.Core\Clay.Domain.Core.csproj", "{A70D68F3-60E2-4B6B-9E85-B79351AC9844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clay.Domain.Core", "Clay.Domain.Core\Clay.Domain.Core.csproj", "{A70D68F3-60E2-4B6B-9E85-B79351AC9844}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

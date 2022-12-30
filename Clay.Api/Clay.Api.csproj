@@ -24,4 +24,4 @@
     <ProjectReference Include="..\Clay.Domain.Core\Clay.Domain.Core.csproj" />
   </ItemGroup>
 
-</Project>
+</Project>  
