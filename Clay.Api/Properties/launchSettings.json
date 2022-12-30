@@ -7,7 +7,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT_SECRET": "SECRET_KEY",
-        "DATABASE_CONNECTIONSTRING": "localhost;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false"
+        "DATABASE_CONNECTIONSTRING": "Server=localhost:1433;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7204;http://localhost:5287"
@@ -19,7 +19,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT_SECRET": "SECRET_KEY",
-        "DATABASE_CONNECTIONSTRING": "localhost;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false"
+        "DATABASE_CONNECTIONSTRING": "Server=localhost:1433;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false"
       }
     },
     "Docker": {

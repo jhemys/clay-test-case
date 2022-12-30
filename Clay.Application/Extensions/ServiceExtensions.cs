@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Clay.Application.Interfaces;
+using Clay.Application.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -28,6 +30,11 @@ namespace Clay.Application.Extensions
                     ValidateAudience = false
                 };
             });
+        }
+
+        public static void AddApplicationServices(this IServiceCollection services)
+        {
+            services.AddTransient<IEmployeeService, EmployeeService>();
         }
     }
 }

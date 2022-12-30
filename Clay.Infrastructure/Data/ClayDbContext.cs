@@ -8,7 +8,6 @@ namespace Clay.Infrastructure.Data
     {
         public ClayDbContext(DbContextOptions<ClayDbContext> options) : base(options) { }
 
-        public DbSet<Lock> Locks { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

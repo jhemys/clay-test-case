@@ -6,6 +6,11 @@ services:
     build:
       context: .
       dockerfile: Clay.Api/Dockerfile
+    links:
+      - sqlserver
         
   sqlserver:
+    container_name: sqlserver
     image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"

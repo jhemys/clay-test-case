@@ -10,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddJwtAuthentication();
 builder.Services.AddDatabaseConnection();
+builder.Services.AddApplicationServices();
+builder.Services.AddRepositories();
 
 builder.Services.AddSingleton<ILogger>(provider => provider.GetRequiredService<ILogger<ExceptionMiddleware>>());
 
@@ -26,5 +28,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Services.MigrateDatabase();
 
 app.Run();

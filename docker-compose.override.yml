@@ -6,7 +6,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - JWT_SECRET=SECRET_KEY
-      - DATABASE_CONNECTIONSTRING=localhost;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false
+      - DATABASE_CONNECTIONSTRING=Server=sqlserver;Database=Clay;Trusted_Connection=true;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=True;Integrated Security=false
     ports:
       - "80"
       - "443"
@@ -21,5 +21,3 @@ services:
       MSSQL_PID: "Developer"
     volumes:
       - ./Clay.Infrastructure/sql/data:/var/opt/mssql/data
-    ports:
-      - "1433:1433"

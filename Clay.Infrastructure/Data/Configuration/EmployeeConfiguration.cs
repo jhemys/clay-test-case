@@ -20,8 +20,13 @@ namespace Clay.Infrastructure.Data.Configuration
                 .IsRequired();
 
             builder
-                .Property(e => e.Role)
-                .IsRequired();
+                .OwnsOne(p => p.Role);
+
+            builder
+                .OwnsOne(p => p.Role, a =>
+                {
+                    a.Property(p => p.Name ).HasColumnName("Role").IsRequired();
+                });
 
             builder
                 .Property(e => e.Password)

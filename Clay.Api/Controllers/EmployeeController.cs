@@ -1,4 +1,5 @@
 ﻿using Clay.Application.DTOs;
+using Clay.Application.Exceptions;
 using Clay.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +32,16 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<EmployeeDTO> GetById(int id)
+        public async Task<ActionResult<EmployeeDTO>> GetById(int id)
         {
-            return await _employeeService.GetById(id);
+            try
+            {
+                return await _employeeService.GetById(id);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
