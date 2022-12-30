@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clay.Infrastructure.Migrations
 {
     [DbContext(typeof(ClayDbContext))]
-    [Migration("20221230140640_InitialCreate")]
+    [Migration("20221230175456_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace Clay.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Clay.Domain.Employee", b =>
+            modelBuilder.Entity("Clay.Domain.Aggregates.Employee.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,18 +52,12 @@ namespace Clay.Infrastructure.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Clay.Domain.Employee", b =>
+            modelBuilder.Entity("Clay.Domain.Aggregates.Employee.Employee", b =>
                 {
-                    b.OwnsOne("Clay.Domain.Role", "Role", b1 =>
+                    b.OwnsOne("Clay.Domain.ValueObjects.Role", "Role", b1 =>
                         {
                             b1.Property<int>("EmployeeId")
                                 .HasColumnType("int");
-
-                            b1.Property<int>("Id")
-                                .HasColumnType("int");
-
-                            b1.Property<bool>("IsActive")
-                                .HasColumnType("bit");
 
                             b1.Property<string>("Name")
                                 .IsRequired()

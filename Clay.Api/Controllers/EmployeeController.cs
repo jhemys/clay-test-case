@@ -79,7 +79,8 @@ namespace Clay.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpPatch]
+        [Route("ChangePassword/{id:int}")]
         public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
         {
             var employeeToChangePassword = new ChangeEmployeePasswordDTO
