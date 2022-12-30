@@ -11,9 +11,14 @@ namespace Clay.Infrastructure.Repositories
         {
         }
 
-        public async Task<Employee> GetByEmailAndPassword(string email, string password)
+        public async Task<Employee?> GetByEmailAndPassword(string email, string password)
         {
-            return await Entity.SingleOrDefaultAsync(e => e.Password == password && e.Email == email);
+            var entity = await Entity.SingleOrDefaultAsync(e =>
+                        e.Password == password &&
+                        e.Email == email &&
+                        e.IsActive);
+
+            return entity;
         }
     }
 }

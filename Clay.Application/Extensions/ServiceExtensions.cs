@@ -7,7 +7,7 @@ namespace Clay.Application.Extensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+        public static void AddJwtAuthentication(this IServiceCollection services)
         {
             var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
             services.AddAuthentication(x =>
@@ -27,8 +27,6 @@ namespace Clay.Application.Extensions
                     ValidateAudience = false
                 };
             });
-
-            return services;
         }
     }
 }

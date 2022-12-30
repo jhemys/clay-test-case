@@ -43,7 +43,6 @@ namespace Clay.Api.Middlewares
                 StatusCode = context.Response.StatusCode,
                 Message = message
             }.ToString());
-
         }
 
 

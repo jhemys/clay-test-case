@@ -2,6 +2,6 @@
 {
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
-        Task<Employee> GetByEmailAndPassword(string email, string password);
+        Task<Employee?> GetByEmailAndPassword(string email, string password);
     }
 }

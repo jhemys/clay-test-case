@@ -4,5 +4,10 @@ namespace Clay.Domain
 {
     public class Role : Entity
     {
+        public string Name { get; set; }
+        public Role(string name)
+        {
+            Name = name;
+        }
     }
 }

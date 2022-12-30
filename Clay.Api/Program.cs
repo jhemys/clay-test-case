@@ -1,5 +1,6 @@
 using Clay.Api.Middlewares;
 using Clay.Application.Extensions;
+using Clay.Infrastructure.ServicesExtension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddJwtAuthentication();
+builder.Services.AddDatabaseConnection();
 
 builder.Services.AddSingleton<ILogger>(provider => provider.GetRequiredService<ILogger<ExceptionMiddleware>>());
 

@@ -15,15 +15,20 @@ namespace Clay.Infrastructure.Repositories
             Entity = _context.Set<T>();
         }
 
+        public async Task<IList<T>> GetAll()
+        {
+            return await Entity.ToListAsync();
+        }
+
+        public async Task<T> GetById(int id)
+        {
+            return await Entity.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task AddAsync(T model)
         {
             await Entity.AddAsync(model);
             await _context.SaveEntitiesAsync();
-        }
-
-        public async Task<T> GetById(long id)
-        {
-            return await Entity.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void Remove(T model)

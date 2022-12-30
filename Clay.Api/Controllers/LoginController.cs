@@ -1,4 +1,5 @@
 ﻿using Clay.Api.Models;
+using Clay.Application.Exceptions;
 using Clay.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,19 +18,23 @@ namespace Clay.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest model)
         {
-            var employee = await _employeeService.GetByEmailAndPassword(model.Email, model.Password);
-
-            if (employee == null)
-                return NotFound();
-
-            var token = _employeeService.GenerateToken(employee);
-
-            return new LoginResponse
+            try
             {
-                Id = employee.Id,
-                Name = employee.Name,
-                Token = token
-            };
+                var employee = await _employeeService.GetByEmailAndPassword(model.Email, model.Password);
+
+                var token = _employeeService.GenerateToken(employee);
+
+                return new LoginResponse
+                {
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Token = token
+                };
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
