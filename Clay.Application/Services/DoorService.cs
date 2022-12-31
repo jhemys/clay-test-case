@@ -3,6 +3,9 @@ using Clay.Application.Exceptions;
 using Clay.Application.Interfaces.Repositories;
 using Clay.Application.Interfaces.Services;
 using Clay.Domain.Aggregates.Door;
+using Clay.Domain.Aggregates.DoorHistory;
+using Clay.Domain.DomainObjects;
+using Clay.Domain.ValueObjects;
 using Mapster;
 
 namespace Clay.Application.Services
@@ -96,6 +99,80 @@ namespace Clay.Application.Services
                 throw new EntityNotFoundException();
 
             return DoorToUpdate;
+        }
+
+        public async Task UnlockDoor(int doorId, int employeeId, string? tagIdentification)
+        {
+            var requestDate = DateTime.UtcNow;
+            var door = await UnitOfWork.DoorRepository.GetById(doorId);
+
+            if (door is null)
+                throw new EntityNotFoundException("Door informed not found.");
+
+            var employee = await UnitOfWork.EmployeeRepository.GetById(employeeId);
+
+            if (employee is null)
+                throw new EntityNotFoundException("Employee informed not found.");
+
+            try
+            {
+                var employeeRole = Role.Create(employee.Role);
+
+                door.Unlock(employeeRole);
+
+                var state = "Unlocked";
+                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, tagIdentification);
+
+                await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
+            }
+            catch (DomainException ex)
+            {
+                var state = "UnlockFailed";
+                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, tagIdentification, ex.Message);
+
+                throw;
+            }
+            finally
+            {
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        public async Task LockDoor(int doorId, int employeeId)
+        {
+            var requestDate = DateTime.UtcNow;
+            var door = await UnitOfWork.DoorRepository.GetById(doorId);
+
+            if (door is null)
+                throw new EntityNotFoundException("Door informed not found.");
+
+            var employee = await UnitOfWork.EmployeeRepository.GetById(employeeId);
+
+            if (employee is null)
+                throw new EntityNotFoundException("Employee informed not found.");
+
+            try
+            {
+                var employeeRole = Role.Create(employee.Role);
+
+                door.Unlock(employeeRole);
+
+                var state = "Locked";
+                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, null);
+
+                await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
+            }
+            catch (DomainException ex)
+            {
+                var state = "LockFailed";
+                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, ex.Message);
+
+                throw;
+            }
+            finally
+            {
+                await UnitOfWork.CommitAsync();
+            }
         }
     }
 }

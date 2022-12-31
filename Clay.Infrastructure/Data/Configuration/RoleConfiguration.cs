@@ -10,6 +10,10 @@ namespace Clay.Infrastructure.Data.Configuration
             builder
                 .Property(p => p.Name)
                 .IsRequired();
+
+            builder
+                .HasIndex(p => p.Name)
+                .IsUnique();
         }
     }
 }
