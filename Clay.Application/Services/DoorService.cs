@@ -121,15 +121,15 @@ namespace Clay.Application.Services
                 door.Unlock(employeeRole);
 
                 var state = "Unlocked";
-                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, tagIdentification);
+                var doorHistory = DoorHistory.Create(doorId, door.Name, employeeId, employee.Name, state, requestDate, tagIdentification);
 
                 await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
                 UnitOfWork.DoorRepository.Update(door);
             }
-            catch (DomainException ex)
+            catch (Exception ex) when (ex is DomainException || ex is DomainActionNotPermittedException)
             {
                 var state = "UnlockFailed";
-                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, tagIdentification, ex.Message);
+                var doorHistory = DoorHistory.Create(doorId, door.Name, employeeId, employee.Name, state, requestDate, tagIdentification, ex.Message);
 
                 await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
 
@@ -161,7 +161,7 @@ namespace Clay.Application.Services
                 door.Lock();
 
                 var state = "Locked";
-                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, null);
+                var doorHistory = DoorHistory.Create(doorId, door.Name, employeeId, employee.Name, state, requestDate, null);
 
                 await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
                 UnitOfWork.DoorRepository.Update(door);
@@ -169,7 +169,7 @@ namespace Clay.Application.Services
             catch (DomainException ex)
             {
                 var state = "LockFailed";
-                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, null, ex.Message);
+                var doorHistory = DoorHistory.Create(doorId, door.Name, employeeId, employee.Name, state, requestDate, null, ex.Message);
 
                 await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
 

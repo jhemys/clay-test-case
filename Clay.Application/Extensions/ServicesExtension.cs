@@ -12,6 +12,7 @@ namespace Clay.Application.Extensions
         public static void AddApplicationServices(this IServiceCollection services)
         {
             services.AddTransient<IDoorService, DoorService>();
+            services.AddTransient<IDoorHistoryService, DoorHistoryService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
         }
     }
