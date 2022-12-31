@@ -99,7 +99,7 @@ namespace Clay.Application.Services
                     new Claim(ClaimTypes.Name, employee.Name.ToString()),
                     new Claim(ClaimTypes.Role, employee.Role.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(20),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

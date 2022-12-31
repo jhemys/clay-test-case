@@ -25,23 +25,28 @@ namespace Clay.Api.Middlewares
             catch (EntityNotFoundException ex)
             {
                 _logger.LogError($"{ex}");
-                await HandleNotFoundExceptionAync(httpContext, ex.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound, ex.Message);
+            }
+            catch (DomainActionNotPermittedException ex)
+            {
+                _logger.LogError($"{ex}");
+                await HandleExceptionAsync(httpContext, HttpStatusCode.Forbidden, ex.Message);
             }
             catch (DomainException ex)
             {
                 _logger.LogError($"{ex}");
-                await HandleDomainExceptionAync(httpContext, ex.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong: {ex}");
-                await HandleExceptionAync(httpContext);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, "Internal Server Error");
             }
         }
 
-        private Task HandleNotFoundExceptionAync(HttpContext context, string message)
+        private Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, string message)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            context.Response.StatusCode = (int)statusCode;
             context.Response.ContentType = "application/json";
 
             return context.Response.WriteAsync(new ErrorDetails
@@ -49,32 +54,6 @@ namespace Clay.Api.Middlewares
                 StatusCode = context.Response.StatusCode,
                 Message = message
             }.ToString());
-        }
-
-        private Task HandleDomainExceptionAync(HttpContext context, string message)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            context.Response.ContentType = "application/json";
-
-            return context.Response.WriteAsync(new ErrorDetails
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = message
-            }.ToString());
-        }
-
-
-        private Task HandleExceptionAync(HttpContext context)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.ContentType = "application/json";
-
-            return context.Response.WriteAsync(new ErrorDetails
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = "Internal Server Error"
-            }.ToString());
-
         }
     }
 }

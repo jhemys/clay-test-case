@@ -2,7 +2,9 @@
 using Clay.Application.DTOs;
 using Clay.Application.Interfaces.Services;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Clay.Api.Controllers
 {
@@ -77,6 +79,43 @@ namespace Clay.Api.Controllers
             await _doorService.RemoveAllowedRole(id, request.Adapt<RoleDTO>());
 
             return NoContent();
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("{id:int}/Unlock")]
+        public async Task<ActionResult> Unlock(int id, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] UnlockDoorRequest? request = null)
+        {
+            var userId = GetUserId();
+
+            int employeeId = 0;
+            if (userId is null || !int.TryParse(userId, out employeeId))
+                Unauthorized();
+
+            await _doorService.UnlockDoor(id, employeeId, request?.TagIdentification);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("{id:int}/Lock")]
+        public async Task<ActionResult> Lock(int id)
+        {
+            var userId = GetUserId();
+
+            int employeeId = 0;
+            if (userId is null || !int.TryParse(userId, out employeeId))
+                Unauthorized();
+
+            await _doorService.LockDoor(id, employeeId);
+
+            return NoContent();
+        }
+
+        private string? GetUserId()
+        {
+            return User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
         }
     }
 }

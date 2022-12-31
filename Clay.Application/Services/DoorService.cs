@@ -124,11 +124,14 @@ namespace Clay.Application.Services
                 var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, tagIdentification);
 
                 await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
+                UnitOfWork.DoorRepository.Update(door);
             }
             catch (DomainException ex)
             {
                 var state = "UnlockFailed";
                 var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, tagIdentification, ex.Message);
+
+                await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
 
                 throw;
             }
@@ -155,17 +158,20 @@ namespace Clay.Application.Services
             {
                 var employeeRole = Role.Create(employee.Role);
 
-                door.Unlock(employeeRole);
+                door.Lock();
 
                 var state = "Locked";
                 var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, null);
 
                 await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
+                UnitOfWork.DoorRepository.Update(door);
             }
             catch (DomainException ex)
             {
                 var state = "LockFailed";
-                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, ex.Message);
+                var doorHistory = DoorHistory.Create(employeeId, employee.Name, state, requestDate, null, ex.Message);
+
+                await UnitOfWork.DoorHistoryRepository.AddAsync(doorHistory);
 
                 throw;
             }

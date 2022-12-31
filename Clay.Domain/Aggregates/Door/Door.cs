@@ -87,7 +87,7 @@ namespace Clay.Domain.Aggregates.Door
             Throw.IfArgumentIsFalse(IsLocked, "Door is already unlocked.");
 
             if (!CanBeUnlockedByRole(userRole))
-                throw new DomainException("Informed Role is not allowed to unlock this door.");
+                throw new DomainActionNotPermittedException("Informed Role is not allowed to unlock this door.");
 
             SetLocked(false);
         }
