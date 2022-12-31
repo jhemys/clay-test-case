@@ -6,26 +6,29 @@ namespace Clay.Domain.Aggregates.Door
     public class Door : Entity, IAggregateRoot
     {
         public string Name { get; protected set; }
-        public string Description { get; protected set; }
+        public string? Description { get; protected set; }
         public bool IsLocked { get; protected set; }
         public bool IsAccessRestricted { get; protected set; }
         public virtual IList<Role> AllowedRoles { get; protected set; }
 
-        private Door() : base() { }
+        private Door() : base()
+        {
+            AllowedRoles = new List<Role>();
+        }
 
-        protected Door(string name, string description, bool isLocked, bool isRestricted) : this()
+        protected Door(string name, string? description, bool isLocked, bool isAccessRestricted) : this()
         {
             Name = name;
             Description = description;
             IsLocked = isLocked;
-            IsAccessRestricted = isRestricted;
+            IsAccessRestricted = isAccessRestricted;
         }
 
-        public static Door Create(string name, string description, bool isLocked, bool isRestricted)
+        public static Door Create(string name, string? description, bool isLocked, bool isAccessRestricted)
         {
             Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
 
-            return new Door(name, description, isLocked, isRestricted);
+            return new Door(name, description, isLocked, isAccessRestricted);
         }
 
         public bool CanBeUnlockedByRole(Role userRole)
@@ -40,12 +43,12 @@ namespace Clay.Domain.Aggregates.Door
             Name = name;
         }
 
-        public void SetDescription(string description)
+        public void SetDescription(string? description)
         {
             Description = description;
         }
 
-        public void SetLocked(bool isLocked)
+        private void SetLocked(bool isLocked)
         {
             IsLocked = isLocked;
         }
@@ -53,6 +56,11 @@ namespace Clay.Domain.Aggregates.Door
         public void SetAccessRestricted(bool isAccessRestricted)
         {
             IsAccessRestricted = isAccessRestricted;
+
+            if (!isAccessRestricted)
+            {
+                AllowedRoles.Clear();
+            }
         }
 
         public void AddRole(Role role)
@@ -67,6 +75,9 @@ namespace Clay.Domain.Aggregates.Door
         public void RemoveRole(Role role)
         {
             Throw.IfArgumentIsFalse(IsAccessRestricted, "Roles can only be added/removed to restricted doors.");
+
+            if (!AllowedRoles.Any(existingRole => existingRole.Equals(role)))
+                throw new DomainException("Informed role does not exist for this door.");
 
             AllowedRoles.Remove(role);
         }

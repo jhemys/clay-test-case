@@ -8,10 +8,10 @@ namespace Clay.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeesController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
@@ -62,7 +62,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpPatch]
-        [Route("ChangePassword/{id:int}")]
+        [Route("{id:int}/ChangePassword")]
         public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
         {
             var employeeToChangePassword = request.Adapt<ChangeEmployeePasswordDTO>();

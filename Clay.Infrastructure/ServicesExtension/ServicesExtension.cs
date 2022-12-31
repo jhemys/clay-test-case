@@ -27,6 +27,7 @@ namespace Clay.Infrastructure.ServicesExtension
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IDoorRepository, DoorRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         }
 

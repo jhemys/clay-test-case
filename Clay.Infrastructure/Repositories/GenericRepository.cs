@@ -7,20 +7,20 @@ namespace Clay.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : Entity, IAggregateRoot
     {
-        private readonly ClayDbContext _context;
+        protected readonly ClayDbContext Context;
         protected readonly DbSet<T> Entity;
         public GenericRepository(ClayDbContext context)
         {
-            _context = context;
-            Entity = _context.Set<T>();
+            Context = context;
+            Entity = Context.Set<T>();
         }
 
-        public async Task<IList<T>> GetAll()
+        public virtual async Task<IList<T>> GetAll()
         {
             return await Entity.ToListAsync();
         }
 
-        public async Task<T?> GetById(int id)
+        public virtual async Task<T?> GetById(int id)
         {
             return await Entity.SingleOrDefaultAsync(x => x.Id == id);
         }
