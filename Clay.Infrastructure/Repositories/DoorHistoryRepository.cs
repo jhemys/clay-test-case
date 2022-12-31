@@ -7,7 +7,7 @@ namespace Clay.Infrastructure.Repositories
 {
     public class DoorHistoryRepository : GenericRepository<DoorHistory>, IDoorHistoryRepository
     {
-        public int PageSize { get; set; } = 500;
+        public int PageSize { get; set; } = 50;
         public int PageNumber { get; set; } = 1;
         public DoorHistoryRepository(ClayDbContext context) : base(context) { }
 
