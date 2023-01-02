@@ -23,13 +23,6 @@ namespace Clay.Tests.Domain.Aggregates.Employee
         [InlineData("Employee Name", "", "tagIdentification", "The parameter Role is required.")]
         [InlineData("Employee Name", " ", "tagIdentification", "The parameter Role is required.")]
         [InlineData("Employee Name", null, "tagIdentification", "The parameter Role is required.")]
-        [InlineData("Employee Name", "Role", "123456", "", "tagIdentification", "The parameter Email is required.")]
-        [InlineData("Employee Name", "Role", "123456", " ", "tagIdentification", "The parameter Email is required.")]
-        [InlineData("Employee Name", "Role", "123456", null, "tagIdentification", "The parameter Email is required.")]
-        [InlineData("Employee Name", "Role", "123456", "@email", "tagIdentification", "The parameter Email is invalid.")]
-        [InlineData("Employee Name", "Role", "", "email@email.com", "tagIdentification", "The parameter Password is required.")]
-        [InlineData("Employee Name", "Role", " ", "email@email.com", "tagIdentification", "The parameter Password is required.")]
-        [InlineData("Employee Name", "Role", null, "email@email.com", "tagIdentification", "The parameter Password is required.")]
         public void Should_Fail_To_Create_Valid_Entity(string employeeName, string roleName, string tagIdentification, string errorMessage)
         {
             var action = () => EmployeeAggregate.Create(employeeName, roleName, tagIdentification);

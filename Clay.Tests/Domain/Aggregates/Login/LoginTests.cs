@@ -18,18 +18,16 @@ namespace Clay.Tests.Domain.Aggregates.Login
         }
 
         [Theory]
-        [InlineData("email@email.com", "123456", "5", "The parameter PermissionType is invalid.")]
-        [InlineData("email@email.com", "123456", "-1", "The parameter PermissionType is invalid.")]
-        [InlineData("email@email.com", "123456", "2", "The parameter PermissionType is invalid.")]
+        [InlineData("email@email.com", "123456", "Error 2", "The parameter PermissionType is invalid.")]
         [InlineData("email@email.com", "123456", "", "The parameter PermissionType is invalid.")]
         [InlineData("email@email.com", "123456", " ", "The parameter PermissionType is invalid.")]
-        [InlineData("", "123456", "2", "The parameter Email is required.")]
-        [InlineData(" ", "123456", "2", "The parameter Email is required.")]
-        [InlineData(null, "123456", "2", "The parameter Email is required.")]
-        [InlineData("@email", "123456", "2", "The parameter Email is invalid.")]
-        [InlineData("email@email.com", "", "2", "The parameter Password is required.")]
-        [InlineData("email@email.com", " ", "2", "The parameter Password is required.")]
-        [InlineData("email@email.com", null, "2", "The parameter Password is required.")]
+        [InlineData("", "123456", "FullAccess", "The parameter Email is required.")]
+        [InlineData(" ", "123456", "FullAccess", "The parameter Email is required.")]
+        [InlineData(null, "123456", "FullAccess", "The parameter Email is required.")]
+        [InlineData("@email", "123456", "FullAccess", "The parameter Email is invalid.")]
+        [InlineData("email@email.com", "", "FullAccess", "The parameter Password is required.")]
+        [InlineData("email@email.com", " ", "FullAccess", "The parameter Password is required.")]
+        [InlineData("email@email.com", null, "FullAccess", "The parameter Password is required.")]
         public void Should_Fail_To_Create_Valid_Entity(string email, string password, string permissionType, string errorMessage)
         {
             var employee = EmployeeAggregate.Create("name", "role");
