@@ -17,7 +17,7 @@ namespace Clay.Domain.Aggregates.Door
 
         public static Role Create(string name)
         {
-            Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
+            Throw.IfArgumentIsNullOrWhitespace(name, "The parameter Name is required.");
 
             return new Role(name);
         }

@@ -26,7 +26,7 @@ namespace Clay.Domain.Aggregates.Door
 
         public static Door Create(string name, string? description, bool isLocked, bool isAccessRestricted)
         {
-            Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
+            Throw.IfArgumentIsNullOrWhitespace(name, "The parameter Name is required.");
 
             return new Door(name, description, isLocked, isAccessRestricted);
         }
@@ -38,7 +38,7 @@ namespace Clay.Domain.Aggregates.Door
 
         public void SetName(string name)
         {
-            Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
+            Throw.IfArgumentIsNullOrWhitespace(name, "The parameter Name is required.");
 
             Name = name;
         }

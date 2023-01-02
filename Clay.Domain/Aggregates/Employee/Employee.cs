@@ -23,18 +23,18 @@ namespace Clay.Domain.Aggregates.Employee
 
         public static Employee Create(string name, string role, string password, string email, string? tagIdentification = null)
         {
-            Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
-            Throw.IfArgumentIsNullOrEmpty(role, "The parameter Role is required.");
-            Throw.IfArgumentIsNullOrEmpty(email, "The parameter Email is required.");
+            Throw.IfArgumentIsNullOrWhitespace(name, "The parameter Name is required.");
+            Throw.IfArgumentIsNullOrWhitespace(role, "The parameter Role is required.");
+            Throw.IfArgumentIsNullOrWhitespace(email, "The parameter Email is required.");
             Throw.IfArgumentIsInvalidEmail(email, "The parameter Email is invalid.");
-            Throw.IfArgumentIsNullOrEmpty(password, "The parameter Password is required.");
+            Throw.IfArgumentIsNullOrWhitespace(password, "The parameter Password is required.");
 
             return new Employee(name, role, password, email, tagIdentification);
         }
 
         public void ChangePassword(string currentPassword, string newPassword)
         {
-            Throw.IfAssertArgumentsAreNotEquals(Password, currentPassword, "Current Password is invalid.");
+            Throw.IfAssertArgumentsAreNotEqual(Password, currentPassword, "Current Password is invalid.");
             Throw.IfAssertArgumentsAreEqual(newPassword, currentPassword, "New Password must be different than Current Password.");
 
             Password = newPassword;
@@ -42,21 +42,21 @@ namespace Clay.Domain.Aggregates.Employee
 
         public void SetName(string name)
         {
-            Throw.IfArgumentIsNullOrEmpty(name, "The parameter Name is required.");
+            Throw.IfArgumentIsNullOrWhitespace(name, "The parameter Name is required.");
 
             Name = name;
         }
 
         public void SetEmail(string email)
         {
-            Throw.IfArgumentIsNullOrEmpty(email, "The parameter Email is required.");
+            Throw.IfArgumentIsNullOrWhitespace(email, "The parameter Email is required.");
 
             Email = email;
         }
 
         public void SetRole(string role)
         {
-            Throw.IfArgumentIsNullOrEmpty(role, "The parameter Role is required.");
+            Throw.IfArgumentIsNullOrWhitespace(role, "The parameter Role is required.");
 
             Role = role;
         }
