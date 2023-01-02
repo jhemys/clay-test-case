@@ -30,6 +30,7 @@ namespace Clay.Infrastructure.ServicesExtension
             services.AddTransient<IDoorRepository, DoorRepository>();
             services.AddTransient<IDoorHistoryRepository, DoorHistoryRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<ILoginRepository, LoginRepository>();
         }
 
         public static void MigrateDatabase(this IServiceProvider services)

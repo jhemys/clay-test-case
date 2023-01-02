@@ -6,6 +6,11 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireFullAccess", policy => policy.RequireRole("FullAccess"));
+    options.AddPolicy("RequireEmployeeAcces", policy => policy.RequireRole("Employee", "FullAccess"));
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {

@@ -14,6 +14,7 @@ namespace Clay.Application.Extensions
             services.AddTransient<IDoorService, DoorService>();
             services.AddTransient<IDoorHistoryService, DoorHistoryService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<ILoginService, LoginService>();
         }
     }
 }

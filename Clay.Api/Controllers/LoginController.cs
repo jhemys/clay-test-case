@@ -1,6 +1,9 @@
 ﻿using Clay.Api.Models;
+using Clay.Application.DTOs;
 using Clay.Application.Exceptions;
 using Clay.Application.Interfaces.Services;
+using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Api.Controllers
@@ -9,10 +12,10 @@ namespace Clay.Api.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IEmployeeService _employeeService;
-        public LoginController(IEmployeeService employeeService)
+        private readonly ILoginService _loginService;
+        public LoginController(ILoginService loginService)
         {
-            _employeeService = employeeService;
+            _loginService = loginService;
         }
 
         [HttpPost]
@@ -20,14 +23,14 @@ namespace Clay.Api.Controllers
         {
             try
             {
-                var employee = await _employeeService.GetByEmailAndPassword(model.Email, model.Password);
+                var login = await _loginService.GetByEmailAndPassword(model.Email, model.Password);
 
-                var token = _employeeService.GenerateToken(employee);
+                var token = _loginService.GenerateToken(login);
 
                 return new LoginResponse
                 {
-                    Id = employee.Id,
-                    Name = employee.Name,
+                    Id = login.Id,
+                    Email = login.Email,
                     Token = token
                 };
             }
@@ -41,6 +44,30 @@ namespace Clay.Api.Controllers
 
                 return BadRequest(errorDetails);
             }
+        }
+
+        [HttpPost]
+        [Route("Create")]
+        public async Task<ActionResult> Create([FromBody] LoginCreationRequest request)
+        {
+            var login = request.Adapt<LoginDTO>();
+
+            await _loginService.CreateLogin(login);
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [Authorize]
+        [Route("{id:int}/ChangePassword")]
+        public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
+        {
+            var loginToChangePassword = request.Adapt<ChangePasswordDTO>();
+            loginToChangePassword.Id = id;
+
+            await _loginService.ChangePassword(loginToChangePassword);
+
+            return NoContent();
         }
     }
 }

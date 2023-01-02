@@ -3,7 +3,7 @@
 namespace Clay.Application.DTOs
 {
     [ExcludeFromCodeCoverage]
-    public class ChangeEmployeePasswordDTO
+    public class ChangePasswordDTO
     {
         public int Id { get; set; }
         public string CurrentPassword { get; set; }

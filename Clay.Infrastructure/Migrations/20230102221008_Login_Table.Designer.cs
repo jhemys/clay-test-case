@@ -4,6 +4,7 @@ using Clay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clay.Infrastructure.Migrations
 {
     [DbContext(typeof(ClayDbContext))]
-    partial class ClayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230102221008_Login_Table")]
+    partial class LoginTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +51,7 @@ namespace Clay.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doors", (string)null);
+                    b.ToTable("Doors");
                 });
 
             modelBuilder.Entity("Clay.Domain.Aggregates.Door.Role", b =>
@@ -68,7 +71,7 @@ namespace Clay.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role", (string)null);
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Clay.Domain.Aggregates.DoorHistory.DoorHistory", b =>
@@ -111,7 +114,7 @@ namespace Clay.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DoorHistories", (string)null);
+                    b.ToTable("DoorHistories");
                 });
 
             modelBuilder.Entity("Clay.Domain.Aggregates.Employee.Employee", b =>
@@ -138,7 +141,7 @@ namespace Clay.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Clay.Domain.Aggregates.Login.Login", b =>
@@ -170,7 +173,7 @@ namespace Clay.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Logins", (string)null);
+                    b.ToTable("Logins");
                 });
 
             modelBuilder.Entity("DoorRole", b =>
@@ -185,7 +188,7 @@ namespace Clay.Infrastructure.Migrations
 
                     b.HasIndex("DoorsId");
 
-                    b.ToTable("DoorRole", (string)null);
+                    b.ToTable("DoorRole");
                 });
 
             modelBuilder.Entity("Clay.Domain.Aggregates.Login.Login", b =>
