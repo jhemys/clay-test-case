@@ -1,5 +1,8 @@
-﻿namespace Clay.Application.DTOs
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Clay.Application.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class EmployeeDTO
     {
         public int Id { get; set; }

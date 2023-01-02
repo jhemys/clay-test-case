@@ -49,11 +49,6 @@ namespace Clay.Domain.Aggregates.Door
             Description = description;
         }
 
-        private void SetLocked(bool isLocked)
-        {
-            IsLocked = isLocked;
-        }
-
         public void SetAccessRestricted(bool isAccessRestricted)
         {
             IsAccessRestricted = isAccessRestricted;
@@ -98,6 +93,11 @@ namespace Clay.Domain.Aggregates.Door
             Throw.IfArgumentIsTrue(IsLocked, "Door is already locked.");
 
             SetLocked(true);
+        }
+
+        private void SetLocked(bool isLocked)
+        {
+            IsLocked = isLocked;
         }
     }
 }

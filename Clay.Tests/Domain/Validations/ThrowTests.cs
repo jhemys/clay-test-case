@@ -1,7 +1,5 @@
 ﻿using Clay.Domain.DomainObjects.Exceptions;
 using Clay.Domain.Validations;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
 namespace Clay.Tests.Domain.Validations
 {

@@ -36,6 +36,7 @@ namespace Clay.Domain.Aggregates.Employee
         {
             Throw.IfAssertArgumentsAreNotEqual(Password, currentPassword, "Current Password is invalid.");
             Throw.IfAssertArgumentsAreEqual(newPassword, currentPassword, "New Password must be different than Current Password.");
+            Throw.IfArgumentIsNullOrWhitespace(newPassword, "The parameter Password is required.");
 
             Password = newPassword;
         }
@@ -50,6 +51,7 @@ namespace Clay.Domain.Aggregates.Employee
         public void SetEmail(string email)
         {
             Throw.IfArgumentIsNullOrWhitespace(email, "The parameter Email is required.");
+            Throw.IfArgumentIsInvalidEmail(email, "The parameter Email is invalid.");
 
             Email = email;
         }

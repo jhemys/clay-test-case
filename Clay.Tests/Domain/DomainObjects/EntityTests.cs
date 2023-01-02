@@ -1,6 +1,4 @@
 ﻿using Clay.Domain.DomainObjects;
-using FluentAssertions;
-using System.Transactions;
 
 namespace Clay.Tests.Domain.DomainObjects
 {
