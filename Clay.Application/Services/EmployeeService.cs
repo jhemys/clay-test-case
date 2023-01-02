@@ -43,7 +43,6 @@ namespace Clay.Application.Services
 
         public async Task CreateEmployee(EmployeeDTO employee)
         {
-
             var employeeToCreate = Employee.Create(employee.Name, employee.Role, employee.Password, employee.Email);
 
             await UnitOfWork.EmployeeRepository.AddAsync(employeeToCreate);

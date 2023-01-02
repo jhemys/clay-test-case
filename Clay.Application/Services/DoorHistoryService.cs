@@ -4,7 +4,7 @@ using Clay.Domain.Aggregates.DoorHistory;
 
 namespace Clay.Application.Services
 {
-    internal class DoorHistoryService : ApplicationBaseService, IDoorHistoryService
+    public class DoorHistoryService : ApplicationBaseService, IDoorHistoryService
     {
         public DoorHistoryService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

@@ -1,5 +1,8 @@
-﻿namespace Clay.Api.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Clay.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class PagedResult<T>
     {
         private const int DefaultPage = 1;

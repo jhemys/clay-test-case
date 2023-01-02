@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Clay.Infrastructure.Data.Configuration
 {
-    internal class DoorHistoryConfiguration : BaseConfiguration<DoorHistory>
+    public class DoorHistoryConfiguration : BaseConfiguration<DoorHistory>
     {
         public override void ConfigureProperties(EntityTypeBuilder<DoorHistory> builder)
         {

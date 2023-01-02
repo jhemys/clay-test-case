@@ -1,7 +1,9 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace Clay.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorDetails
     {
         public int StatusCode { get; internal set; }

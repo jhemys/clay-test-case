@@ -1,7 +1,8 @@
-﻿using Clay.Application.DTOs;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Clay.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class DoorResponse
     {
         public int Id { get; set; }

@@ -48,7 +48,7 @@ namespace Clay.Tests.Domain.DomainObjects
         }
     }
 
-    public class FakeEntity : Entity
+    internal class FakeEntity : Entity
     {
         public FakeEntity() : base() { }
 

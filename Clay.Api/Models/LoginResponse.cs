@@ -1,5 +1,8 @@
-﻿namespace Clay.Api.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Clay.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class LoginResponse
     {
         public int Id { get; set; }

@@ -90,16 +90,6 @@ namespace Clay.Application.Services
             await UnitOfWork.CommitAsync();
         }
 
-        private async Task<Door> FindById(int id)
-        {
-            var DoorToUpdate = await UnitOfWork.DoorRepository.GetById(id);
-
-            if (DoorToUpdate is null)
-                throw new EntityNotFoundException();
-
-            return DoorToUpdate;
-        }
-
         public async Task UnlockDoor(int doorId, int employeeId, string? tagIdentification)
         {
             var requestDate = DateTime.UtcNow;
@@ -112,11 +102,11 @@ namespace Clay.Application.Services
 
             if (employee is null)
                 throw new EntityNotFoundException("Employee informed not found.");
+            
+            var employeeRole = Role.Create(employee.Role);
 
             try
             {
-                var employeeRole = Role.Create(employee.Role);
-
                 door.Unlock(employeeRole);
 
                 var state = "Unlocked";
@@ -155,8 +145,6 @@ namespace Clay.Application.Services
 
             try
             {
-                var employeeRole = Role.Create(employee.Role);
-
                 door.Lock();
 
                 var state = "Locked";
@@ -178,6 +166,16 @@ namespace Clay.Application.Services
             {
                 await UnitOfWork.CommitAsync();
             }
+        }
+
+        private async Task<Door> FindById(int id)
+        {
+            var DoorToUpdate = await UnitOfWork.DoorRepository.GetById(id);
+
+            if (DoorToUpdate is null)
+                throw new EntityNotFoundException();
+
+            return DoorToUpdate;
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace Clay.Api.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Clay.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class EmployeeRequest
     {
         public string Name { get; set; }
