@@ -1,9 +1,7 @@
 using Clay.Api.Middlewares;
 using Clay.Application.Extensions;
 using Clay.Infrastructure.ServicesExtension;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,3 +63,5 @@ app.MapControllers();
 app.Services.MigrateDatabase();
 
 app.Run();
+
+public partial class Program { }

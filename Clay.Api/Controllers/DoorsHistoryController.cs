@@ -24,7 +24,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet("doors/{doorId:int}/access-history")]
-        public async Task<ActionResult<PagedResult<DoorHistoryResponse>>> GetAllHistory(int doorId, [FromQuery] int? pageSize, int? page)
+        public async Task<ActionResult<PagedResult<DoorHistoryResponse>>> GetAllAccessHistoryByDoor(int doorId, [FromQuery] int? pageSize, int? page)
         {
             (var pagedResult, var total) = await _doorHistoryService.GetByDoorIdPaged(doorId, page, pageSize);
 

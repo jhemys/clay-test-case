@@ -11,5 +11,6 @@ namespace Clay.Application.DTOs
         public bool IsLocked { get; set; }
         public bool IsAccessRestricted { get; set; }
         public IList<RoleDTO> AllowedRoles { get; set; }
+        public bool IsActive { get; set; }
     }
 }

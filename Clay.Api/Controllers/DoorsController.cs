@@ -90,7 +90,7 @@ namespace Clay.Api.Controllers
 
             int employeeId = 0;
             if (userId is null || !int.TryParse(userId, out employeeId))
-                Unauthorized();
+                return Unauthorized();
 
             await _doorService.UnlockDoor(id, employeeId, request?.TagIdentification);
 
@@ -115,7 +115,7 @@ namespace Clay.Api.Controllers
 
         private string? GetUserId()
         {
-            return User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
+            return User?.Claims?.FirstOrDefault(x => x.Type == "Id")?.Value;
         }
     }
 }
