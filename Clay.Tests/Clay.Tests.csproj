@@ -25,6 +25,8 @@
   <ItemGroup>
     <Folder Include="Application\" />
     <Folder Include="Api\" />
+    <Folder Include="Domain\Aggregates\Door\" />
+    <Folder Include="Domain\Aggregates\Employee\" />
   </ItemGroup>
 
   <ItemGroup>

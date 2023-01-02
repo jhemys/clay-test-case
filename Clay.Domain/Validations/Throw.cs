@@ -1,4 +1,4 @@
-﻿using Clay.Domain.DomainObjects;
+﻿using Clay.Domain.DomainObjects.Exceptions;
 using System.Net.Mail;
 
 namespace Clay.Domain.Validations

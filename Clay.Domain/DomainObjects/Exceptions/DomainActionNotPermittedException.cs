@@ -1,4 +1,4 @@
-﻿namespace Clay.Domain.DomainObjects
+﻿namespace Clay.Domain.DomainObjects.Exceptions
 {
     public class DomainActionNotPermittedException : Exception
     {

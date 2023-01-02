@@ -1,4 +1,4 @@
-﻿using Clay.Domain.DomainObjects;
+﻿using Clay.Domain.DomainObjects.Exceptions;
 using Clay.Domain.Validations;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
@@ -100,6 +100,15 @@ namespace Clay.Tests.Domain.Validations
         public void Should_IfArgumentIsInvalidEmail_Throw_Exception(string email, string message)
         {
             Assert.Throws<DomainException>(() => Throw.IfArgumentIsInvalidEmail(email, message)).Message.Should().Be(message);
+        }
+
+        [Fact]
+        public void Should_IfArgumentIsInvalidEmail_Not_Throw_Exception()
+        {
+            var message = "error";
+            var action = () => Throw.IfArgumentIsInvalidEmail("email@email.com", message);
+
+            action.Should().NotThrow<DomainException>();
         }
     }
 }

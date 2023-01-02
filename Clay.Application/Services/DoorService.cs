@@ -4,8 +4,7 @@ using Clay.Application.Interfaces.Repositories;
 using Clay.Application.Interfaces.Services;
 using Clay.Domain.Aggregates.Door;
 using Clay.Domain.Aggregates.DoorHistory;
-using Clay.Domain.DomainObjects;
-using Clay.Domain.ValueObjects;
+using Clay.Domain.DomainObjects.Exceptions;
 using Mapster;
 
 namespace Clay.Application.Services

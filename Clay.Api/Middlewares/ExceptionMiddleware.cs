@@ -1,6 +1,6 @@
 ﻿using Clay.Api.Models;
 using Clay.Application.Exceptions;
-using Clay.Domain.DomainObjects;
+using Clay.Domain.DomainObjects.Exceptions;
 using System.Net;
 
 namespace Clay.Api.Middlewares

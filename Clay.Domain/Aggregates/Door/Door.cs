@@ -1,4 +1,5 @@
 ﻿using Clay.Domain.DomainObjects;
+using Clay.Domain.DomainObjects.Exceptions;
 using Clay.Domain.Validations;
 
 namespace Clay.Domain.Aggregates.Door

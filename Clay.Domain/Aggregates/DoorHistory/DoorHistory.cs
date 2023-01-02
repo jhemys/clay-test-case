@@ -1,4 +1,6 @@
 ﻿using Clay.Domain.DomainObjects;
+using Clay.Domain.Validations;
+using System.Xml.Linq;
 
 namespace Clay.Domain.Aggregates.DoorHistory
 {
@@ -16,7 +18,15 @@ namespace Clay.Domain.Aggregates.DoorHistory
 
         private DoorHistory() : base() { }
 
-        protected DoorHistory(int doorId, string doorName, int employeeId, string employeeName, string currentState, DateTime logDate, string? tagIdentification, string? message) : this()
+        protected DoorHistory(
+            int doorId,
+            string doorName,
+            int employeeId,
+            string employeeName,
+            string currentState,
+            DateTime logDate,
+            string? tagIdentification,
+            string? message) : this()
         {
             DoorId = doorId;
             DoorName = doorName;
@@ -28,8 +38,20 @@ namespace Clay.Domain.Aggregates.DoorHistory
             TagIdentification = tagIdentification;
         }
 
-        public static DoorHistory Create(int doorId, string doorName, int employeeId, string employeeName, string currentState, DateTime logDate, string? tagIdentification, string? message = null)
+        public static DoorHistory Create(
+            int doorId,
+            string doorName,
+            int employeeId,
+            string employeeName,
+            string currentState,
+            DateTime logDate,
+            string? tagIdentification,
+            string? message = null)
         {
+            Throw.IfArgumentIsNullOrWhitespace(doorName, "The parameter DoorName is required.");
+            Throw.IfArgumentIsNullOrWhitespace(employeeName, "The parameter EmployeeName is required.");
+            Throw.IfArgumentIsNullOrWhitespace(currentState, "The parameter CurrentState is required.");
+
             return new DoorHistory(doorId, doorName, employeeId, employeeName, currentState, logDate, tagIdentification, message);
         }
     }
