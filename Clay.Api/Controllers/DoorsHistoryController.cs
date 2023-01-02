@@ -1,12 +1,14 @@
 ﻿using Clay.Api.Models;
 using Clay.Application.Interfaces.Services;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Api.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [Authorize(Roles = "FullAccess")]
     public class DoorsHistoryController : ControllerBase
     {
         private readonly IDoorHistoryService _doorHistoryService;

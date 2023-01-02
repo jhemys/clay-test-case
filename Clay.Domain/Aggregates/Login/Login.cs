@@ -32,7 +32,7 @@ namespace Clay.Domain.Aggregates.Login
 
             PermissionType? permission = permissionType is null ? null : permissionTypeParsed;
 
-            return new Login(password, email, employee, permission);
+            return new Login(email, password, employee, permission);
         }
 
         public void ChangePassword(string currentPassword, string newPassword)

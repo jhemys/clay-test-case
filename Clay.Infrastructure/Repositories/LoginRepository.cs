@@ -15,7 +15,7 @@ namespace Clay.Infrastructure.Repositories
         public async Task<Login?> GetByEmailAndPassword(string email, string password)
         {
             var entity = await Entity.SingleOrDefaultAsync(e =>
-                        e.Password == password &&
+                        EF.Functions.Collate(e.Password, "SQL_Latin1_General_CP1_CS_AS") == password &&
                         e.Email == email &&
                         e.IsActive);
 

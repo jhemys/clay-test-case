@@ -19,6 +19,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Employee,FullAccess")]
         public async Task<IList<DoorResponse>> GetAll()
         {
             var doors = await _doorService.GetAll();
@@ -27,6 +28,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Employee,FullAccess")]
         public async Task<DoorResponse> GetById(int id)
         {
             var door = await _doorService.GetById(id);
@@ -35,6 +37,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> Post([FromBody] DoorRequest request)
         {
             var door = request.Adapt<DoorDTO>();
@@ -45,6 +48,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> Put(int id, [FromBody] DoorRequest request)
         {
             var door = request.Adapt<DoorDTO>();
@@ -56,6 +60,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> Delete(int id)
         {
             await _doorService.DeleteDoor(id);
@@ -65,6 +70,7 @@ namespace Clay.Api.Controllers
 
         [HttpPatch]
         [Route("{id:int}/AddRole")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> AddRole(int id, [FromBody] RoleRequest request)
         {
             await _doorService.AddAllowedRole(id, request.Adapt<RoleDTO>());
@@ -74,6 +80,7 @@ namespace Clay.Api.Controllers
 
         [HttpPatch]
         [Route("{id:int}/RemoveRole")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> RemoveRole(int id, [FromBody] RoleRequest request)
         {
             await _doorService.RemoveAllowedRole(id, request.Adapt<RoleDTO>());
@@ -84,6 +91,7 @@ namespace Clay.Api.Controllers
         [HttpPut]
         [Authorize]
         [Route("{id:int}/Unlock")]
+        [Authorize(Roles = "Employee,FullAccess")]
         public async Task<ActionResult> Unlock(int id, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] UnlockDoorRequest? request = null)
         {
             var userId = GetUserId();
@@ -100,6 +108,7 @@ namespace Clay.Api.Controllers
         [HttpPut]
         [Authorize]
         [Route("{id:int}/Lock")]
+        [Authorize(Roles = "Employee,FullAccess")]
         public async Task<ActionResult> Lock(int id)
         {
             var userId = GetUserId();

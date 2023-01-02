@@ -1,4 +1,5 @@
 ﻿using Clay.Domain.Aggregates.Login;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Clay.Infrastructure.Data.Configuration

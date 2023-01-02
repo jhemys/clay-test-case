@@ -19,6 +19,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest model)
         {
             try
@@ -48,6 +49,7 @@ namespace Clay.Api.Controllers
 
         [HttpPost]
         [Route("Create")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> Create([FromBody] LoginCreationRequest request)
         {
             var login = request.Adapt<LoginDTO>();
@@ -58,7 +60,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpPatch]
-        [Authorize]
+        [Authorize(Roles = "Employee,FullAccess")]
         [Route("{id:int}/ChangePassword")]
         public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
         {

@@ -2,12 +2,14 @@
 using Clay.Application.DTOs;
 using Clay.Application.Interfaces.Services;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "FullAccess")]
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
