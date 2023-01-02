@@ -18,7 +18,7 @@ namespace Clay.Tests.Api.Controllers
         [Fact]
         public async Task Authenticate_Should_Fail_With_Invalid_Request()
         {
-            var fakeService = A.Fake<IEmployeeService>();
+            var fakeService = A.Fake<ILoginService>();
             var client = CreateTestServerClient(fakeService);
             A.CallTo(() => fakeService.GetByEmailAndPassword(A<string>.Ignored, A<string>.Ignored)).Throws<EntityNotFoundException>();
             var loginController = new LoginController(fakeService);
@@ -40,7 +40,7 @@ namespace Clay.Tests.Api.Controllers
         [Fact]
         public async Task Authenticate_Should_Fail_Unexpected_Error()
         {
-            var fakeService = A.Fake<IEmployeeService>();
+            var fakeService = A.Fake<ILoginService>();
             var client = CreateTestServerClient(fakeService);
             A.CallTo(() => fakeService.GetByEmailAndPassword(A<string>.Ignored, A<string>.Ignored)).Throws<Exception>();
             var request = new LoginRequest
@@ -57,14 +57,12 @@ namespace Clay.Tests.Api.Controllers
             result.StatusCode.Should().Be(500);
         }
 
-
-
         [Fact]
         public async Task Authenticate_Should_Return_Token()
         {
-            var fakeService = A.Fake<IEmployeeService>();
+            var fakeService = A.Fake<ILoginService>();
             A.CallTo(() => fakeService.GetByEmailAndPassword(A<string>.Ignored, A<string>.Ignored));
-            A.CallTo(() => fakeService.GenerateToken(A<EmployeeDTO>.Ignored)).Returns("123456");
+            A.CallTo(() => fakeService.GenerateToken(A<LoginDTO>.Ignored)).Returns("123456");
             var client = CreateTestServerClient(fakeService);
             var request = new LoginRequest
             {
@@ -79,7 +77,7 @@ namespace Clay.Tests.Api.Controllers
             result.Token.Should().Be("123456");
         }
 
-        private HttpClient CreateTestServerClient(IEmployeeService fakeService)
+        private HttpClient CreateTestServerClient(ILoginService fakeService)
         {
             var application = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>

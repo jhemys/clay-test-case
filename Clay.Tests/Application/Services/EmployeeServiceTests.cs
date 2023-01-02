@@ -51,70 +51,6 @@ namespace Clay.Tests.Application.Services
         }
 
         [Fact]
-        public async Task GetByEmailAndPassword_Should_Fail_With_Invalid_Entry()
-        {
-            var unitOfWork = A.Fake<IUnitOfWork>();
-            var service = new EmployeeService(unitOfWork);
-            var entity = PrepareEmployeeData(true);
-            A.CallTo(() => unitOfWork.EmployeeRepository.GetByEmailAndPassword(A<string>._, A<string>.Ignored)).Returns(entity);
-
-            var action = () => service.GetByEmailAndPassword("test@email.com", "123456");
-
-            await action.Should().ThrowAsync<EntityNotFoundException>().WithMessage("Entry not found.");
-        }
-
-        [Fact]
-        public async Task GetByEmailAndPassword_Should_Return_Data()
-        {
-            var unitOfWork = A.Fake<IUnitOfWork>();
-            var service = new EmployeeService(unitOfWork);
-            var entity = PrepareEmployeeData();
-            A.CallTo(() => unitOfWork.EmployeeRepository.GetByEmailAndPassword(A<string>._, A<string>.Ignored)).Returns(entity);
-
-            var data = await service.GetByEmailAndPassword("test@email.com", "123456");
-
-            data.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task CreateEmployee_Should_Fail_With_Invalid_Entry()
-        {
-            var unitOfWork = A.Fake<IUnitOfWork>();
-            var service = new EmployeeService(unitOfWork);
-            var employee = new EmployeeDTO()
-            {
-                Email = "email@email.com",
-                Password= "password",
-                Role = "Role",
-            };
-
-            var action = async () => await service.CreateEmployee(employee);
-
-            await action.Should().ThrowAsync<DomainException>().WithMessage("The parameter Name is required.");
-            A.CallTo(() => unitOfWork.EmployeeRepository.AddAsync(A<Employee>.Ignored)).MustNotHaveHappened();
-            A.CallTo(() => unitOfWork.CommitAsync()).MustNotHaveHappened();
-        }
-
-        [Fact]
-        public async Task CreateEmployee_Should_Create_Employee()
-        {
-            var unitOfWork = A.Fake<IUnitOfWork>();
-            var service = new EmployeeService(unitOfWork);
-            var employee = new EmployeeDTO()
-            {
-                Name = "Test",
-                Email = "email@email.com",
-                Password = "password",
-                Role = "Role",
-            };
-
-            await service.CreateEmployee(employee);
-
-            A.CallTo(() => unitOfWork.EmployeeRepository.AddAsync(A<Employee>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => unitOfWork.CommitAsync()).MustHaveHappenedOnceExactly();
-        }
-
-        [Fact]
         public async Task UpdateEmployee_Should_Fail_With_Invalid_Data()
         {
             var unitOfWork = A.Fake<IUnitOfWork>();
@@ -212,7 +148,7 @@ namespace Clay.Tests.Application.Services
         {
             return new List<Employee>
             {
-                Employee.Create("Name", "Role", "123456", "email@email.com")
+                Employee.Create("Name", "Role")
             };
 
         }
@@ -222,7 +158,7 @@ namespace Clay.Tests.Application.Services
             if (createNullObject)
                 return null;
 
-            return Employee.Create("Name", "Role", "123456", "email@email.com");
+            return Employee.Create("Name", "Role");
         }
     }
 }

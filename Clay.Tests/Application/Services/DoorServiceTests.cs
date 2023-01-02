@@ -463,7 +463,7 @@ namespace Clay.Tests.Application.Services
             if (createNullObject)
                 return null;
 
-            return Employee.Create("Name", "Role", "123456", "email@email.com");
+            return Employee.Create("Name", "Role");
         }
     }
 }
