@@ -4,6 +4,7 @@ using Clay.Application.Interfaces.Repositories;
 using Clay.Application.Interfaces.Services;
 using Clay.Domain.Aggregates.Employee;
 using Clay.Domain.Aggregates.Login;
+using Clay.Domain.DomainObjects.Exceptions;
 using Mapster;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,7 +31,11 @@ namespace Clay.Application.Services
         {
             var loginToUpdate = await FindById(login.Id);
 
-            loginToUpdate.ChangePassword(login.CurrentPassword, login.NewPassword);
+            var currentLoginPermissionType = PermissionType.Employee;
+            if(!Enum.TryParse(login.CurrentLoginPermissionType, out currentLoginPermissionType))
+                throw new DomainActionNotPermittedException();
+
+            loginToUpdate.ChangePassword(login.CurrentLoginId, currentLoginPermissionType, login.CurrentPassword, login.NewPassword);
 
             UnitOfWork.LoginRepository.Update(loginToUpdate);
 

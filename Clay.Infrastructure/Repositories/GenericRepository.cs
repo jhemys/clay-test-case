@@ -20,9 +20,19 @@ namespace Clay.Infrastructure.Repositories
             return await Entity.ToListAsync();
         }
 
+        public async Task<IList<T>> GetAllActive()
+        {
+            return await Entity.Where(x => x.IsActive).ToListAsync();
+        }
+
         public virtual async Task<T?> GetById(int id)
         {
             return await Entity.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<T?> GetActiveById(int id)
+        {
+            return await Entity.SingleOrDefaultAsync(x => x.Id == id && x.IsActive);
         }
 
         public async Task AddAsync(T model)

@@ -35,8 +35,11 @@ namespace Clay.Domain.Aggregates.Login
             return new Login(email, password, employee, permission);
         }
 
-        public void ChangePassword(string currentPassword, string newPassword)
+        public void ChangePassword(int currentLoginId, PermissionType currentLoginPermissionType, string currentPassword, string newPassword)
         {
+            if (currentLoginId != Id && currentLoginPermissionType is not PermissionType.FullAccess)
+                throw new DomainActionNotPermittedException("You are not allowed to change the password for this login.");
+
             Throw.IfAssertArgumentsAreNotEqual(Password, currentPassword, "Current Password is invalid.");
             Throw.IfAssertArgumentsAreEqual(newPassword, currentPassword, "New Password must be different than Current Password.");
             Throw.IfArgumentIsNullOrWhitespace(newPassword, "The parameter Password is required.");

@@ -5,6 +5,7 @@ using Clay.Application.Interfaces.Services;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Clay.Api.Controllers
 {
@@ -64,12 +65,26 @@ namespace Clay.Api.Controllers
         [Route("{id:int}/ChangePassword")]
         public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
         {
+            var loginIdClaim = GetClaimInfo("Id");
+            var roleClaimType = (User?.Identity as ClaimsIdentity)?.RoleClaimType;
+            var permissionType = GetClaimInfo(roleClaimType);
+
+            if (!int.TryParse(loginIdClaim, out var loginId) || permissionType is null)
+                return Unauthorized();
+
             var loginToChangePassword = request.Adapt<ChangePasswordDTO>();
             loginToChangePassword.Id = id;
+            loginToChangePassword.CurrentLoginId = loginId;
+            loginToChangePassword.CurrentLoginPermissionType = permissionType;
 
             await _loginService.ChangePassword(loginToChangePassword);
 
             return NoContent();
+        }
+
+        private string? GetClaimInfo(string type)
+        {
+            return User?.Claims?.FirstOrDefault(x => x.Type == type)?.Value;
         }
     }
 }

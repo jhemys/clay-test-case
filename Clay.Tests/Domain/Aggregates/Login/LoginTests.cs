@@ -45,9 +45,20 @@ namespace Clay.Tests.Domain.Aggregates.Login
             var employee = EmployeeAggregate.Create("name", "role");
             var loginEntity = LoginAggregate.Create("email@email.com", "123456", employee);
 
-            var action = () => loginEntity.ChangePassword(currentPassword, newPassword);
+            var action = () => loginEntity.ChangePassword(0, Clay.Domain.Aggregates.Login.PermissionType.Employee, currentPassword, newPassword);
 
             action.Should().Throw<DomainException>().WithMessage(errorMessage);
+        }
+
+        [Fact]
+        public void ChangePassword_Different_User_Should_Fail()
+        {
+            var employee = EmployeeAggregate.Create("name", "role");
+            var loginEntity = LoginAggregate.Create("email@email.com", "123456", employee);
+
+            var action = () => loginEntity.ChangePassword(1, Clay.Domain.Aggregates.Login.PermissionType.Employee, "123456", "1234567");
+
+            action.Should().Throw<DomainActionNotPermittedException>().WithMessage("You are not allowed to change the password for this login.");
         }
 
         [Fact]
@@ -57,7 +68,7 @@ namespace Clay.Tests.Domain.Aggregates.Login
             var loginEntity = LoginAggregate.Create("email@email.com", "123456", employee);
             string newPassword = "654321";
 
-            loginEntity.ChangePassword("123456", newPassword);
+            loginEntity.ChangePassword(0, Clay.Domain.Aggregates.Login.PermissionType.Employee, "123456", newPassword);
 
             loginEntity.Password.Should().Be(newPassword);
         }
