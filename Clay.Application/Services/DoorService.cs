@@ -133,12 +133,12 @@ namespace Clay.Application.Services
         public async Task LockDoor(int doorId, int employeeId)
         {
             var requestDate = DateTime.UtcNow;
-            var door = await UnitOfWork.DoorRepository.GetById(doorId);
+            var door = await UnitOfWork.DoorRepository.GetActiveById(doorId);
 
             if (door is null)
                 throw new EntityNotFoundException("Door informed not found.");
 
-            var employee = await UnitOfWork.EmployeeRepository.GetById(employeeId);
+            var employee = await UnitOfWork.EmployeeRepository.GetActiveById(employeeId);
 
             if (employee is null)
                 throw new EntityNotFoundException("Employee informed not found.");
