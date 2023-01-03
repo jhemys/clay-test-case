@@ -9,7 +9,6 @@ namespace Clay.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "FullAccess")]
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -19,6 +18,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Employee,FullAccess")]
         public async Task<IList<EmployeeResponse>> GetAll()
         {
             var employees = await _employeeService.GetAll();
@@ -27,6 +27,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Employee,FullAccess")]
         public async Task<EmployeeResponse> GetById(int id)
         {
             var employee = await _employeeService.GetById(id);
@@ -35,6 +36,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> Put(int id, [FromBody] EmployeeRequest request)
         {
             var employee = request.Adapt<EmployeeDTO>();
@@ -46,6 +48,7 @@ namespace Clay.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "FullAccess")]
         public async Task<ActionResult> Delete(int id)
         {
             await _employeeService.DeleteEmployee(id);
