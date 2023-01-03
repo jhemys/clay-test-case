@@ -10,6 +10,7 @@ namespace Clay.Api.Models
         public string? Description { get; set; }
         public bool IsLocked { get; set; }
         public bool IsAccessRestricted { get; set; }
+        public bool IsActive { get; set; }
         public IList<RoleResponse> AllowedRoles { get; set; }
     }
 }

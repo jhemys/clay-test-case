@@ -20,7 +20,7 @@ namespace Clay.Infrastructure.Repositories
             return await Entity.ToListAsync();
         }
 
-        public async Task<IList<T>> GetAllActive()
+        public virtual async Task<IList<T>> GetAllActive()
         {
             return await Entity.Where(x => x.IsActive).ToListAsync();
         }
@@ -30,7 +30,7 @@ namespace Clay.Infrastructure.Repositories
             return await Entity.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<T?> GetActiveById(int id)
+        public virtual async Task<T?> GetActiveById(int id)
         {
             return await Entity.SingleOrDefaultAsync(x => x.Id == id && x.IsActive);
         }

@@ -13,11 +13,25 @@ namespace Clay.Infrastructure.Repositories
         {
             return await Entity.Include(x => x.AllowedRoles).ToListAsync();
         }
+        public override async Task<IList<Door>> GetAllActive()
+        {
+            return await Entity
+                            .Include(x => x.AllowedRoles.Where(role => role.IsActive))
+                            .Where(x => x.IsActive)
+                            .ToListAsync();
+        }
+
+        public override async Task<Door?> GetActiveById(int id)
+        {
+            return await Entity
+                            .Include(x => x.AllowedRoles.Where(role => role.IsActive))
+                            .SingleOrDefaultAsync(x => x.Id == id && x.IsActive);
+        }
 
         public override async Task<Door?> GetById(int id)
         {
             return await Entity
-                            .Include(x => x.AllowedRoles.Where(role => role.IsActive))
+                            .Include(x => x.AllowedRoles)
                             .SingleOrDefaultAsync(x => x.Id == id);
         }
 
