@@ -1,5 +1,6 @@
 ﻿using Clay.Application.Interfaces.Repositories;
 using Clay.Infrastructure.Data;
+using Clay.Infrastructure.Data.Seed;
 using Clay.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,10 @@ namespace Clay.Infrastructure.ServicesExtension
             {
                 var dataContext = scope.ServiceProvider.GetRequiredService<ClayDbContext>();
                 dataContext.Database.Migrate();
+
+                new DataSeed()
+                    .SeedAsync(dataContext)
+                    .Wait();
             }
         }
 

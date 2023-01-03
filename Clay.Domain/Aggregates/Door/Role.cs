@@ -5,7 +5,7 @@ namespace Clay.Domain.Aggregates.Door
 {
     public class Role : Entity, IEquatable<Role>
     {
-        public string Name { get; set; }
+        public string Name { get; protected set; }
         public virtual IReadOnlyCollection<Door> Doors { get; set; }
 
         public Role() : base() { }
