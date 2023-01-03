@@ -7,17 +7,19 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 using Clay.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
-using Clay.Domain.Aggregates.Employee;
 using Clay.Application.DTOs;
 using System.Text.Json;
-using FluentAssertions.Common;
-using NuGet.Protocol;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Clay.Api.Controllers;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Clay.Api.Controllers;
+using Mapster;
+using Clay.Domain.Aggregates.Door;
+using Castle.Core.Internal;
+using System.Security.Claims;
+using System.Security.Principal;
+using Azure;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Tests.Api.Controllers
 {
@@ -29,13 +31,10 @@ namespace Clay.Tests.Api.Controllers
             var doors = PrepareDoorList();
             var fakeService = A.Fake<IDoorService>();
             A.CallTo(() => fakeService.GetAll()).Returns(doors);
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var response = await client.GetAsync("api/doors");
+            var result = await controller.GetAll();
 
-            var result = await response.Content.ReadFromJsonAsync<List<DoorResponse>>();
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             result.Count().Should().Be(2);
         }
 
@@ -45,13 +44,10 @@ namespace Clay.Tests.Api.Controllers
             var door = PrepareDoorData();
             var fakeService = A.Fake<IDoorService>();
             A.CallTo(() => fakeService.GetById(A<int>.Ignored)).Returns(door);
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var response = await client.GetAsync("api/doors/1");
+            var result = await controller.GetById(1);
 
-            var result = await response.Content.ReadFromJsonAsync<DoorResponse>();
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             result.Id.Should().Be(door.Id);
         }
 
@@ -60,11 +56,11 @@ namespace Clay.Tests.Api.Controllers
         {
             var door = PrepareDoorData();
             var fakeService = A.Fake<IDoorService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var response = await client.PostAsJsonAsync("api/doors", door);
+            await controller.Post(door.Adapt<DoorRequest>());
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.CreateDoor(A<DoorDTO>.Ignored)).MustHaveHappened();
         }
 
         [Fact]
@@ -72,22 +68,22 @@ namespace Clay.Tests.Api.Controllers
         {
             var door = PrepareDoorData();
             var fakeService = A.Fake<IDoorService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var response = await client.PutAsJsonAsync("api/doors/1", door);
+            await controller.Put(1, door.Adapt<DoorRequest>());
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.UpdateDoor(A<DoorDTO>.Ignored)).MustHaveHappened();
         }
 
         [Fact]
         public async Task Delete_Should_Remove_Data()
         {
             var fakeService = A.Fake<IDoorService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var response = await client.DeleteAsync("api/doors/1");
+            await controller.Delete(1);
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.DeleteDoor(A<int>.Ignored)).MustHaveHappened();
         }
 
         [Fact]
@@ -95,12 +91,11 @@ namespace Clay.Tests.Api.Controllers
         {
             var role = PrepareRoleData();
             var fakeService = A.Fake<IDoorService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var content = new StringContent(JsonSerializer.Serialize(role), System.Text.Encoding.UTF8, "application/json");
-            var response = await client.PatchAsync("api/doors/1/AddRole", content);
+            await controller.AddRole(1, role.Adapt<RoleRequest>());
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.AddAllowedRole(A<int>.Ignored, A<RoleDTO>.Ignored)).MustHaveHappened();
         }
 
         [Fact]
@@ -108,44 +103,40 @@ namespace Clay.Tests.Api.Controllers
         {
             var role = PrepareRoleData();
             var fakeService = A.Fake<IDoorService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new DoorsController(fakeService);
 
-            var content = new StringContent(JsonSerializer.Serialize(role), System.Text.Encoding.UTF8, "application/json");
-            var response = await client.PatchAsync("api/doors/1/RemoveRole", content);
+            await controller.RemoveRole(1, role.Adapt<RoleRequest>());
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.RemoveAllowedRole(A<int>.Ignored, A<RoleDTO>.Ignored)).MustHaveHappened();
         }
 
-        //[Fact]
-        //public async Task UnlockDoor_Should_Unlock_Door()
-        //{
-        //    var fakeService = A.Fake<IDoorService>();
-        //    var controller = new DoorsController(fakeService);
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.Name, "Nikita"),
-        //        new Claim(ClaimTypes.NameIdentifier, "1"),
-        //        new Claim("Id", "123456")
-        //    };
+        [Fact]
+        public async Task UnlockDoor_Should_Unlock_Door()
+        {
+            var fakeService = A.Fake<IDoorService>();
 
-        //    var identity = new ClaimsIdentity(claims);
-        //    var user = new ClaimsPrincipal(identity);
+            var controller = new DoorsController(fakeService);
+            AddUserInfoIntoContext(controller, "1");
 
-        //    controller.HttpContext = new HttpContext();
-        //    controller.HttpContext.User = user;
+            await controller.Unlock(1);
 
-        //    controller.Unlock(1);
+            A.CallTo(() => fakeService.UnlockDoor(A<int>.Ignored, A<int>.Ignored, A<string?>.Ignored)).MustHaveHappened();
+        }
 
-        //    //var door = PrepareDoorData();
-        //    //var client = CreateTestServerClient(fakeService);
+        [Theory]
+        [InlineData("")]
+        [InlineData("Text")]
+        public async Task UnlockDoor_Should_Fail(string idValue)
+        {
+            var fakeService = A.Fake<IDoorService>();
 
-        //    ////var headers = new Dictionary<string, string>();
-        //    ////headers.Add("Authorization", "Bearer 123456");
+            var controller = new DoorsController(fakeService);
+            AddUserInfoIntoContext(controller, idValue);
 
-        //    //var response = await client.PutAsJsonAsync("api/doors/1/unlock", door);
+            await controller.Unlock(1);
 
-        //    //response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
-        //}
+            A.CallTo(() => fakeService.UnlockDoor(A<int>.Ignored, A<int>.Ignored, A<string?>.Ignored)).MustNotHaveHappened();
+        }
 
         private List<DoorDTO> PrepareDoorList()
         {
@@ -217,32 +208,19 @@ namespace Clay.Tests.Api.Controllers
             };
         }
 
-        private HttpClient CreateTestServerClient(IDoorService fakeService)
+        private void AddUserInfoIntoContext(DoorsController controller, string idValue)
         {
-            var application = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                    {
-                        services.AddSingleton(fakeService);
-
-                        builder.Configure(app => app.UseMiddleware<ExceptionMiddleware>());
-
-                        services.AddMvc(options =>
-                        {
-                            options.Filters.Add(new AllowAnonymousFilter());
-                            options.Filters.Add(new FakeUserFilter());
-                        })
-                        .AddApplicationPart(typeof(Program).Assembly);
-                    });
-                });
-
-            var client = application.CreateClient(new WebApplicationFactoryClientOptions
+            controller.ControllerContext = new ControllerContext();
+            var request = new HttpRequestFeature();
+            var features = new FeatureCollection();
+            features.Set<IHttpRequestFeature>(request);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext(features)
             {
-                AllowAutoRedirect = false
-            });
-
-            return client;
+                User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("Id", idValue),
+                }))
+            };
         }
     }
 }

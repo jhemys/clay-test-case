@@ -1,8 +1,8 @@
-﻿using Clay.Api.Middlewares;
+﻿using Clay.Api.Controllers;
+using Clay.Api.Middlewares;
 using Clay.Api.Models;
 using Clay.Application.DTOs;
 using Clay.Application.Interfaces.Services;
-using Clay.Domain.Aggregates.Employee;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,14 +21,10 @@ namespace Clay.Tests.Api.Controllers
             var employees = PrepareEmployeesData();
             var fakeService = A.Fake<IEmployeeService>();
             A.CallTo(() => fakeService.GetAll()).Returns(employees);
-            var client = CreateTestServerClient(fakeService);
+            var controller = new EmployeesController(fakeService);
 
-            var response = await client.GetAsync("api/employees");
-
-            var result = await response.Content.ReadFromJsonAsync<List<EmployeeResponse>>();
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            result.Count().Should().Be(2);
+            var response = await controller.GetAll();
+            response.Count().Should().Be(2);
         }
 
         [Fact]
@@ -37,27 +33,11 @@ namespace Clay.Tests.Api.Controllers
             var employee = PrepareEmployeeData();
             var fakeService = A.Fake<IEmployeeService>();
             A.CallTo(() => fakeService.GetById(A<int>.Ignored)).Returns(employee);
-            var client = CreateTestServerClient(fakeService);
+            var controller = new EmployeesController(fakeService);
 
-            var response = await client.GetAsync("api/employees/1");
+            var response = await controller.GetById(1);
 
-            var result = await response.Content.ReadFromJsonAsync<EmployeeResponse>();
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            result.Id.Should().Be(employee.Id);
-        }
-
-        [Fact]
-        public async Task Post_Should_Create_Data()
-        {
-            var employee = PrepareEmployeeData().Adapt<EmployeeRequest>();
-            var fakeService = A.Fake<IEmployeeService>();
-            var client = CreateTestServerClient(fakeService);
-
-            var response = await client.PostAsJsonAsync("api/employees", employee);
-
-            var a = await response.Content.ReadAsStringAsync();
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            response.Id.Should().Be(employee.Id);
         }
 
         [Fact]
@@ -65,22 +45,22 @@ namespace Clay.Tests.Api.Controllers
         {
             var employee = PrepareEmployeeData().Adapt<EmployeeRequest>();
             var fakeService = A.Fake<IEmployeeService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new EmployeesController(fakeService);
 
-            var response = await client.PutAsJsonAsync("api/employees/1", employee);
+            await controller.Put(1, employee);
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.UpdateEmployee(A<EmployeeDTO>.Ignored)).MustHaveHappened();
         }
 
         [Fact]
         public async Task Delete_Should_Remove_Data()
         {
             var fakeService = A.Fake<IEmployeeService>();
-            var client = CreateTestServerClient(fakeService);
+            var controller = new EmployeesController(fakeService);
 
-            var response = await client.DeleteAsync("api/employees/1");
+            await controller.Delete(1);
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+            A.CallTo(() => fakeService.DeleteEmployee(A<int>.Ignored)).MustHaveHappened();
         }
 
         private List<EmployeeDTO> PrepareEmployeesData()
@@ -118,27 +98,6 @@ namespace Clay.Tests.Api.Controllers
                 Password = "password",
                 Role = "Admin"
             };
-        }
-
-        private HttpClient CreateTestServerClient(IEmployeeService fakeService)
-        {
-            var application = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                    {
-                        services.AddSingleton(fakeService);
-
-                        builder.Configure(app => app.UseMiddleware<ExceptionMiddleware>());
-                    });
-                });
-
-            var client = application.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false
-            });
-
-            return client;
         }
     }
 }

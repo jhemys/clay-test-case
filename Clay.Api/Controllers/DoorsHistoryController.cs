@@ -18,19 +18,19 @@ namespace Clay.Api.Controllers
         }
 
         [HttpGet("doors/access-history")]
-        public async Task<ActionResult<PagedResult<DoorHistoryResponse>>> GetAllAccessHistory([FromQuery] int? pageSize, int? page)
+        public async Task<PagedResult<DoorHistoryResponse>> GetAllAccessHistory([FromQuery] int? pageSize, int? page)
         {
             (var pagedResult, var total) = await _doorHistoryService.GetAllPaged(page, pageSize);
 
-            return Ok(new PagedResult<DoorHistoryResponse>(pagedResult.Adapt<IList<DoorHistoryResponse>>(), total, page, pageSize));
+            return new PagedResult<DoorHistoryResponse>(pagedResult.Adapt<IList<DoorHistoryResponse>>(), total, page, pageSize);
         }
 
         [HttpGet("doors/{doorId:int}/access-history")]
-        public async Task<ActionResult<PagedResult<DoorHistoryResponse>>> GetAllAccessHistoryByDoor(int doorId, [FromQuery] int? pageSize, int? page)
+        public async Task<PagedResult<DoorHistoryResponse>> GetAllAccessHistoryByDoor(int doorId, [FromQuery] int? pageSize, int? page)
         {
             (var pagedResult, var total) = await _doorHistoryService.GetByDoorIdPaged(doorId, page, pageSize);
 
-            return Ok(new PagedResult<DoorHistoryResponse>(pagedResult.Adapt<IList<DoorHistoryResponse>>(), total, page, pageSize));
+            return new PagedResult<DoorHistoryResponse>(pagedResult.Adapt<IList<DoorHistoryResponse>>(), total, page, pageSize);
         }
     }
 }
