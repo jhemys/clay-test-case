@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 using Clay.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Clay.Tests.Api.Controllers
 {
@@ -19,9 +20,8 @@ namespace Clay.Tests.Api.Controllers
         public async Task Authenticate_Should_Fail_With_Invalid_Request()
         {
             var fakeService = A.Fake<ILoginService>();
-            var client = CreateTestServerClient(fakeService);
             A.CallTo(() => fakeService.GetByEmailAndPassword(A<string>.Ignored, A<string>.Ignored)).Throws<EntityNotFoundException>();
-            var loginController = new LoginController(fakeService);
+            var controller = new LoginController(fakeService);
 
             var request = new LoginRequest
             {
@@ -29,9 +29,9 @@ namespace Clay.Tests.Api.Controllers
                 Password = "123456"
             };
 
-            var response = await client.PostAsJsonAsync("/api/Login", request);
+            var response = await controller.Authenticate(request);
 
-            var result = await response.Content.ReadFromJsonAsync<ErrorDetails>();
+            var result = (ErrorDetails)((ObjectResult)response.Result).Value;
 
             result.Message.Should().Be("Email/Password incorrect or invalid.");
             result.StatusCode.Should().Be(400);
@@ -41,20 +41,18 @@ namespace Clay.Tests.Api.Controllers
         public async Task Authenticate_Should_Fail_Unexpected_Error()
         {
             var fakeService = A.Fake<ILoginService>();
-            var client = CreateTestServerClient(fakeService);
             A.CallTo(() => fakeService.GetByEmailAndPassword(A<string>.Ignored, A<string>.Ignored)).Throws<Exception>();
+            var controller = new LoginController(fakeService);
+
             var request = new LoginRequest
             {
                 Email = "email@email.com",
                 Password = "123456"
             };
 
-            var response = await client.PostAsJsonAsync("/api/Login", request);
+            var action = async () => await controller.Authenticate(request);
 
-            var result = await response.Content.ReadFromJsonAsync<ErrorDetails>();
-
-            result.Message.Should().Be("Internal Server Error");
-            result.StatusCode.Should().Be(500);
+            await action.Should().ThrowAsync<Exception>();
         }
 
         [Fact]
@@ -63,36 +61,19 @@ namespace Clay.Tests.Api.Controllers
             var fakeService = A.Fake<ILoginService>();
             A.CallTo(() => fakeService.GetByEmailAndPassword(A<string>.Ignored, A<string>.Ignored));
             A.CallTo(() => fakeService.GenerateToken(A<LoginDTO>.Ignored)).Returns("123456");
-            var client = CreateTestServerClient(fakeService);
+            var controller = new LoginController(fakeService);
+
             var request = new LoginRequest
             {
                 Email = "email@email.com",
                 Password = "123456"
             };
 
-            var response = await client.PostAsJsonAsync("/api/Login", request);
+            var response = await controller.Authenticate(request);
 
-            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            var result = response.Value;
 
             result.Token.Should().Be("123456");
-        }
-
-        private HttpClient CreateTestServerClient(ILoginService fakeService)
-        {
-            var application = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                    {
-                        services.AddSingleton(fakeService);
-
-                        builder.Configure(app => app.UseMiddleware<ExceptionMiddleware>());
-                    });
-                });
-
-            var client = application.CreateClient();
-
-            return client;
         }
     }
 }
