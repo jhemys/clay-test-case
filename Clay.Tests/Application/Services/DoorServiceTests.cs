@@ -391,8 +391,8 @@ namespace Clay.Tests.Application.Services
             var service = new DoorService(unitOfWork);
             var doorEntity = PrepareDoorData(createNullDoorEntity);
             var employeeEntity = PrepareEmployeeData(createNullEmployeeEntity);
-            A.CallTo(() => unitOfWork.DoorRepository.GetById(A<int>._)).Returns(doorEntity);
-            A.CallTo(() => unitOfWork.EmployeeRepository.GetById(A<int>._)).Returns(employeeEntity);
+            A.CallTo(() => unitOfWork.DoorRepository.GetActiveById(A<int>._)).Returns(doorEntity);
+            A.CallTo(() => unitOfWork.EmployeeRepository.GetActiveById(A<int>._)).Returns(employeeEntity);
 
             var action = async () => await service.LockDoor(1, 1);
 
@@ -410,8 +410,8 @@ namespace Clay.Tests.Application.Services
             var doorEntity = PrepareDoorData();
             var roleEntity = Role.Create("Role");
             var employeeEntity = PrepareEmployeeData();
-            A.CallTo(() => unitOfWork.DoorRepository.GetById(A<int>._)).Returns(doorEntity);
-            A.CallTo(() => unitOfWork.EmployeeRepository.GetById(A<int>._)).Returns(employeeEntity);
+            A.CallTo(() => unitOfWork.DoorRepository.GetActiveById(A<int>._)).Returns(doorEntity);
+            A.CallTo(() => unitOfWork.EmployeeRepository.GetActiveById(A<int>._)).Returns(employeeEntity);
 
             var action = async () => await service.LockDoor(1, 1);
 
@@ -431,8 +431,8 @@ namespace Clay.Tests.Application.Services
             doorEntity.AddRole(roleEntity);
             doorEntity.Unlock(roleEntity);
             var employeeEntity = PrepareEmployeeData();
-            A.CallTo(() => unitOfWork.DoorRepository.GetById(A<int>._)).Returns(doorEntity);
-            A.CallTo(() => unitOfWork.EmployeeRepository.GetById(A<int>._)).Returns(employeeEntity);
+            A.CallTo(() => unitOfWork.DoorRepository.GetActiveById(A<int>._)).Returns(doorEntity);
+            A.CallTo(() => unitOfWork.EmployeeRepository.GetActiveById(A<int>._)).Returns(employeeEntity);
 
             await service.LockDoor(1, 1);
 
